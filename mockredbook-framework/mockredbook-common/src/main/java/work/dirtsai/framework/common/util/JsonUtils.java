@@ -1,4 +1,4 @@
-package work.dirtsai.framework.jackson.framework.common.util;
+package work.dirtsai.framework.common.util;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

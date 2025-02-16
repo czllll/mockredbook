@@ -1,4 +1,4 @@
-package work.dirtsai.framework.jackson.mockredbook.auth;
+package work.dirtsai.mockredbook.auth;
 
 import com.alibaba.druid.filter.config.ConfigTools;
 import lombok.SneakyThrows;

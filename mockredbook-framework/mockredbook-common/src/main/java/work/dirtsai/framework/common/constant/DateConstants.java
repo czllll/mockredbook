@@ -1,4 +1,4 @@
-package work.dirtsai.framework.jackson.framework.common.constant;
+package work.dirtsai.framework.common.constant;
 
 import java.time.format.DateTimeFormatter;
 

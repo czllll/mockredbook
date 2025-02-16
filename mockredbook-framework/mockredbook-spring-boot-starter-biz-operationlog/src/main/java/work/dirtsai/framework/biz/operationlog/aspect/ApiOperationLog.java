@@ -1,4 +1,4 @@
-package work.dirtsai.framework.jackson.framework.biz.operationlog.aspect;
+package work.dirtsai.framework.biz.operationlog.aspect;
 
 import java.lang.annotation.*;
 

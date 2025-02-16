@@ -1,8 +1,8 @@
-package work.dirtsai.framework.jackson.framework.common.response;
+package work.dirtsai.framework.common.response;
 
 import lombok.Data;
-import work.dirtsai.framework.jackson.framework.common.exception.BaseExceptionInterface;
-import work.dirtsai.framework.jackson.framework.common.exception.BizException;
+import work.dirtsai.framework.common.exception.BaseExceptionInterface;
+import work.dirtsai.framework.common.exception.BizException;
 
 import java.io.Serializable;
 

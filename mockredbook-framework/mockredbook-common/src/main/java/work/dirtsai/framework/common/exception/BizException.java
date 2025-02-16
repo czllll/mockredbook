@@ -1,4 +1,4 @@
-package work.dirtsai.framework.jackson.framework.common.exception;
+package work.dirtsai.framework.common.exception;
 
 import lombok.Getter;
 import lombok.Setter;

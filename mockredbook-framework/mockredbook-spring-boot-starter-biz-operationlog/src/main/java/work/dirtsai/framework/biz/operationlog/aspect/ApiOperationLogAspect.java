@@ -1,4 +1,4 @@
-package work.dirtsai.framework.jackson.framework.biz.operationlog.aspect;
+package work.dirtsai.framework.biz.operationlog.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import work.dirtsai.framework.jackson.framework.common.util.JsonUtils;
+import work.dirtsai.framework.common.util.JsonUtils;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ApiOperationLogAspect {
 
-    @Pointcut("@annotation(work.dirtsai.framework.jackson.framework.biz.operationlog.aspect.ApiOperationLog)")
+    @Pointcut("@annotation(work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog)")
     public void apiOperationLog(){}
 
     @Around("apiOperationLog()")
