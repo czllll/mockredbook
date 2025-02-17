@@ -1,4 +1,5 @@
-package work.dirtsai.mockredbook.auth.filter;
+package work.dirtsai.mockredbook.framework.filter;
+
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import work.dirtsai.framework.common.constant.GlobalConstants;
+import work.dirtsai.mockredbook.framework.holder.LoginUserContextHolder;
 
 import java.io.IOException;
 

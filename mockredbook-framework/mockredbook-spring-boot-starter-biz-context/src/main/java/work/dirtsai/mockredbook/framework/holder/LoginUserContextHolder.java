@@ -1,4 +1,4 @@
-package work.dirtsai.mockredbook.auth.filter;
+package work.dirtsai.mockredbook.framework.holder;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
 import work.dirtsai.framework.common.constant.GlobalConstants;
