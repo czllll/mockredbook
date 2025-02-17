@@ -1,6 +1,7 @@
 package work.dirtsai.mockredbook.auth.service;
 
 import work.dirtsai.framework.common.response.Response;
+import work.dirtsai.mockredbook.auth.model.vo.user.UpdatePasswordReqVO;
 import work.dirtsai.mockredbook.auth.model.vo.user.UserLoginReqVO;
 
 public interface UserService {
@@ -17,4 +18,11 @@ public interface UserService {
      * @return
      */
     Response<?> logout();
+
+    /**
+     * 修改密码
+     * @param updatePasswordReqVO
+     * @return
+     */
+    Response<?> updatePassword(UpdatePasswordReqVO updatePasswordReqVO);
 }

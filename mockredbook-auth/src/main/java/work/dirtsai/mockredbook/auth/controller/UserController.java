@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog;
 import work.dirtsai.framework.common.response.Response;
+import work.dirtsai.mockredbook.auth.model.vo.user.UpdatePasswordReqVO;
 import work.dirtsai.mockredbook.auth.model.vo.user.UserLoginReqVO;
 import work.dirtsai.mockredbook.auth.service.UserService;
 
@@ -30,5 +31,10 @@ public class UserController {
         return userService.logout();
     }
 
+    @PostMapping("/password/update")
+    @ApiOperationLog(description = "修改密码")
+    public Response<?> updatePassword(@Validated @RequestBody UpdatePasswordReqVO updatePasswordReqVO) {
+        return userService.updatePassword(updatePasswordReqVO);
+    }
 
 }
