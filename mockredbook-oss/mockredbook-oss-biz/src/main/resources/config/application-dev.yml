@@ -1,4 +1,9 @@
-minio:
-  endpoint: http://127.0.0.1:9000
-  accessKey: admin
-  secretKey: admin123
+storage:
+  minio:
+    endpoint: http://127.0.0.1:9000
+    accessKey: admin
+    secretKey: admin123
+  aliyun-oss:
+    endpoint: oss-eu-west-1.aliyuncs.com
+    accessKey: LTAI5tRbKoY4wjJucGf77Snt
+    secretKey: XVJqbwt3mqUymDgId91wsoFyDWilgE

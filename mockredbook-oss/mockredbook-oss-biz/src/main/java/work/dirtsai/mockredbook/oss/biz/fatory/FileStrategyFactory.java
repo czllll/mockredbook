@@ -17,6 +17,7 @@ public class FileStrategyFactory {
     private String strategyType;
 
     @Bean
+    @RefreshScope
     public FileStrategy getFileStrategy() {
         if (StringUtils.equals(strategyType, "minio")) {
             return new MinioFileStrategy();
