@@ -1,4 +1,4 @@
-package work.dirtsai.mockredbook.auth.runner;
+package work.dirtsai.mockredbook.user.biz.runner;
 
 import cn.hutool.core.collection.CollUtil;
 import com.google.common.collect.Lists;
@@ -10,17 +10,16 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import work.dirtsai.framework.common.util.JsonUtils;
-import work.dirtsai.mockredbook.auth.constant.RedisKeyConstants;
-import work.dirtsai.mockredbook.auth.domain.dataobject.PermissionDO;
-import work.dirtsai.mockredbook.auth.domain.dataobject.RoleDO;
-import work.dirtsai.mockredbook.auth.domain.dataobject.RolePermissionDO;
-import work.dirtsai.mockredbook.auth.domain.mapper.PermissionDOMapper;
-import work.dirtsai.mockredbook.auth.domain.mapper.RoleDOMapper;
-import work.dirtsai.mockredbook.auth.domain.mapper.RolePermissionDOMapper;
+import work.dirtsai.mockredbook.user.biz.constant.RedisKeyConstants;
+import work.dirtsai.mockredbook.user.biz.domain.dataobject.PermissionDO;
+import work.dirtsai.mockredbook.user.biz.domain.dataobject.RoleDO;
+import work.dirtsai.mockredbook.user.biz.domain.dataobject.RolePermissionDO;
+import work.dirtsai.mockredbook.user.biz.domain.mapper.PermissionDOMapper;
+import work.dirtsai.mockredbook.user.biz.domain.mapper.RoleDOMapper;
+import work.dirtsai.mockredbook.user.biz.domain.mapper.RolePermissionDOMapper;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
