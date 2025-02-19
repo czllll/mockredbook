@@ -4,7 +4,7 @@
     <parent>
         <groupId>work.dirtsai</groupId>
         <artifactId>mockredbook-framework</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <groupId>work.dirtsai.mockredbook.framework</groupId>
@@ -12,17 +12,9 @@
     <packaging>jar</packaging>
 
     <name>mockredbook-spring-boot-starter-biz-context</name>
-    <url>http://maven.apache.org</url>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>work.dirtsai</groupId>
-            <artifactId>mockredbook-common</artifactId>
-        </dependency>
 
         <!-- Spring 核心 -->
         <dependency>
@@ -43,6 +35,27 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>transmittable-thread-local</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>mockredbook-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
 </project>

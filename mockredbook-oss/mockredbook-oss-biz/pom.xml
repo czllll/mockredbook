@@ -79,6 +79,13 @@
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
         </dependency>
+
+        <!-- 上下文组件 -->
+        <dependency>
+            <groupId>work.dirtsai.mockredbook.framework</groupId>
+            <artifactId>mockredbook-spring-boot-starter-biz-context</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

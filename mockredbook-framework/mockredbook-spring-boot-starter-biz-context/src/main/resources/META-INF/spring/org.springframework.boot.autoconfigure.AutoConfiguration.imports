@@ -1,1 +1,2 @@
 work.dirtsai.framework.biz.context.config.ContextAutoConfiguration
+work.dirtsai.framework.biz.context.config.FeignContextAutoConfiguration
