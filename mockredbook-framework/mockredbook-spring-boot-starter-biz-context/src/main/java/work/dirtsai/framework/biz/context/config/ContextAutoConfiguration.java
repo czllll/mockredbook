@@ -1,9 +1,9 @@
-package work.dirtsai.mockredbook.framework.config;
+package work.dirtsai.framework.biz.context.config;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import work.dirtsai.mockredbook.framework.filter.HeaderUserId2ContextFilter;
+import work.dirtsai.framework.biz.context.filter.HeaderUserId2ContextFilter;
 
 
 @AutoConfiguration

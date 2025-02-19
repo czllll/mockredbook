@@ -11,7 +11,6 @@ import work.dirtsai.mockredbook.auth.model.vo.user.UserLoginReqVO;
 import work.dirtsai.mockredbook.auth.service.UserService;
 
 @RestController
-@RequestMapping("/user")
 @Slf4j
 public class UserController {
 

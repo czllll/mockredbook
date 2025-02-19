@@ -1,4 +1,4 @@
-package work.dirtsai.mockredbook.framework.filter;
+package work.dirtsai.framework.biz.context.filter;
 
 
 import jakarta.servlet.FilterChain;
@@ -7,17 +7,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import work.dirtsai.framework.common.constant.GlobalConstants;
-import work.dirtsai.mockredbook.framework.holder.LoginUserContextHolder;
+import work.dirtsai.framework.biz.context.holder.LoginUserContextHolder;
 
 import java.io.IOException;
 
 /**
  * @description: 提取请求头中的用户 ID 保存到上下文中，以方便后续使用
  **/
-@Component
 @Slf4j
 public class HeaderUserId2ContextFilter extends OncePerRequestFilter {
 
