@@ -271,6 +271,7 @@
         <artifactId>mockredbook-user-api</artifactId>
         <version>${revision}</version>
       </dependency>
+
     </dependencies>
   </dependencyManagement>
 

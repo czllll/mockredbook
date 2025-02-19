@@ -4,7 +4,7 @@
     <parent>
         <groupId>work.dirtsai</groupId>
         <artifactId>mockredbook-user</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <groupId>work.dirtsai.mockeredbook.user.api</groupId>
