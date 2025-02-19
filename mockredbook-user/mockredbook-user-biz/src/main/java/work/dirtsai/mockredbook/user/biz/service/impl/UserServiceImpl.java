@@ -29,7 +29,9 @@ import work.dirtsai.mockredbook.user.biz.enums.SexEnum;
 import work.dirtsai.mockredbook.user.biz.model.vo.UpdateUserInfoReqVO;
 import work.dirtsai.mockredbook.user.biz.rpc.OssRpcService;
 import work.dirtsai.mockredbook.user.biz.service.UserService;
+import work.dirtsai.mockredbook.user.dto.req.FindUserByPhoneReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.RegisterUserReqDTO;
+import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -210,5 +212,32 @@ public class UserServiceImpl implements UserService {
         redisTemplate.opsForValue().set(userRolesKey, JsonUtils.toJsonString(roles));
 
         return Response.success(userId);
+    }
+
+    /**
+     * 根据手机号查询用户信息
+     *
+     * @param findUserByPhoneReqDTO
+     * @return
+     */
+    @Override
+    public Response<FindUserByPhoneRspDTO> findByPhone(FindUserByPhoneReqDTO findUserByPhoneReqDTO) {
+        String phone = findUserByPhoneReqDTO.getPhone();
+
+        // 根据手机号查询用户信息
+        UserDO userDO = userDOMapper.selectByPhone(phone);
+
+        // 判空
+        if (Objects.isNull(userDO)) {
+            throw new BizException(ResponseCodeEnum.USER_NOT_FOUND);
+        }
+
+        // 构建返参
+        FindUserByPhoneRspDTO findUserByPhoneRspDTO = FindUserByPhoneRspDTO.builder()
+                .id(userDO.getId())
+                .password(userDO.getPassword())
+                .build();
+
+        return Response.success(findUserByPhoneRspDTO);
     }
 }

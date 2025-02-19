@@ -4,7 +4,10 @@ import jakarta.annotation.Resource;
 import work.dirtsai.framework.common.response.Response;
 import org.springframework.stereotype.Component;
 import work.dirtsai.mockredbook.user.api.UserFeignApi;
+import work.dirtsai.mockredbook.user.dto.req.FindUserByPhoneReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.RegisterUserReqDTO;
+import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
+
 /**
  * 用户服务
  */
@@ -25,6 +28,25 @@ public class UserRpcService {
         registerUserReqDTO.setPhone(phone);
 
         Response<Long> response = userFeignApi.registerUser(registerUserReqDTO);
+
+        if (!response.isSuccess()) {
+            return null;
+        }
+
+        return response.getData();
+    }
+
+    /**
+     * 根据手机号查询用户信息
+     *
+     * @param phone
+     * @return
+     */
+    public FindUserByPhoneRspDTO findUserByPhone(String phone) {
+        FindUserByPhoneReqDTO findUserByPhoneReqDTO = new FindUserByPhoneReqDTO();
+        findUserByPhoneReqDTO.setPhone(phone);
+
+        Response<FindUserByPhoneRspDTO> response = userFeignApi.findByPhone(findUserByPhoneReqDTO);
 
         if (!response.isSuccess()) {
             return null;

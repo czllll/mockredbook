@@ -12,7 +12,9 @@ import work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.user.biz.model.vo.UpdateUserInfoReqVO;
 import work.dirtsai.mockredbook.user.biz.service.UserService;
+import work.dirtsai.mockredbook.user.dto.req.FindUserByPhoneReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.RegisterUserReqDTO;
+import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
 
 @RestController
 @RequestMapping("/user")
@@ -38,6 +40,12 @@ public class UserController {
     @ApiOperationLog(description = "用户注册")
     public Response<Long> register(@Validated @RequestBody RegisterUserReqDTO registerUserReqDTO) {
         return userService.register(registerUserReqDTO);
+    }
+
+    @PostMapping("/findByPhone")
+    @ApiOperationLog(description = "手机号查询用户信息")
+    public Response<FindUserByPhoneRspDTO> findByPhone(@Validated @RequestBody FindUserByPhoneReqDTO findUserByPhoneReqDTO) {
+        return userService.findByPhone(findUserByPhoneReqDTO);
     }
 
 }
