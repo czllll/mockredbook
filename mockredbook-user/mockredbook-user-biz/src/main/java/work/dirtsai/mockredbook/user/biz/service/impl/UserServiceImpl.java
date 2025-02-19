@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.framework.common.util.ParamUtils;
 import work.dirtsai.framework.biz.context.holder.LoginUserContextHolder;
+import work.dirtsai.mockredbook.oss.api.FileFeignApi;
 import work.dirtsai.mockredbook.user.biz.domain.dataobject.UserDO;
 import work.dirtsai.mockredbook.user.biz.domain.mapper.UserDOMapper;
 import work.dirtsai.mockredbook.user.biz.enums.ResponseCodeEnum;
@@ -26,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserDOMapper userDOMapper;
+
+    @Resource
+    private FileFeignApi fileFeignApi;
 
     /**
      * 更新用户信息

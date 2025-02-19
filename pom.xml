@@ -250,6 +250,12 @@
         <version>${jaxb-runtime.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>work.dirtsai.mockredbook.oss</groupId>
+        <artifactId>mockredbook-oss-api</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
