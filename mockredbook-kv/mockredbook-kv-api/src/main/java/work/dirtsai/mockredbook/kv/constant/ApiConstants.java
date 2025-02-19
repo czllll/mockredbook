@@ -1,4 +1,4 @@
-package work.dirtsai.mockredbook.kv.dto.constant;
+package work.dirtsai.mockredbook.kv.constant;
 
 public interface ApiConstants {
 

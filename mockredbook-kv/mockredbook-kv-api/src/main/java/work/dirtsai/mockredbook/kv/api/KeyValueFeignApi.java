@@ -1,10 +1,10 @@
-package work.dirtsai.mockredbook.kv.dto.api;
+package work.dirtsai.mockredbook.kv.api;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import work.dirtsai.framework.common.response.Response;
-import work.dirtsai.mockredbook.kv.dto.constant.ApiConstants;
+import work.dirtsai.mockredbook.kv.constant.ApiConstants;
 import work.dirtsai.mockredbook.kv.dto.req.AddNoteContentReqDTO;
 
 @FeignClient(name = ApiConstants.SERVICE_NAME)

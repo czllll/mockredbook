@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import work.dirtsai.mockredbook.kv.biz.service.NoteContentService;
 import work.dirtsai.mockredbook.kv.dto.req.AddNoteContentReqDTO;
 import work.dirtsai.framework.common.response.Response;
+import work.dirtsai.mockredbook.kv.dto.req.FindNoteContentReqDTO;
+import work.dirtsai.mockredbook.kv.dto.resp.FindNoteContentRespDTO;
 
 @RestController
 @RequestMapping("/kv")
@@ -22,6 +24,11 @@ public class NoteContentController {
     @PostMapping(value = "/note/content/add")
     public Response<?> addNoteContent(@Validated @RequestBody AddNoteContentReqDTO addNoteContentReqDTO) {
         return noteContentService.addNoteContent(addNoteContentReqDTO);
+    }
+
+    @PostMapping(value = "/note/content/find")
+    public Response<FindNoteContentRespDTO> findNoteContent(@Validated @RequestBody FindNoteContentReqDTO findNoteContentReqDTO) {
+        return noteContentService.findNoteContent(findNoteContentReqDTO);
     }
 
 }
