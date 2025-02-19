@@ -23,6 +23,9 @@
     <module>mockredbook-gateway</module>
     <module>mockredbook-oss</module>
     <module>mockredbook-user</module>
+    <module>mockredbook-kv</module>
+    <module>mockredbook-kv/mockredbook-kv-api</module>
+    <module>mockredbook-kv/mockredbook-kv-biz</module>
   </modules>
 
   <properties>
@@ -271,6 +274,13 @@
         <artifactId>mockredbook-user-api</artifactId>
         <version>${revision}</version>
       </dependency>
+
+      <dependency>
+        <groupId>work.dirtsai</groupId>
+        <artifactId>mockredbook-kv-api</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
 
     </dependencies>
   </dependencyManagement>

@@ -1,6 +1,5 @@
 package work.dirtsai.mockredbook.user.dto.resp;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Builder;
