@@ -10,41 +10,26 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
-import work.dirtsai.framework.common.enums.DeletedEnum;
-import work.dirtsai.framework.common.enums.StatusEnum;
 import work.dirtsai.framework.common.exception.BizException;
 import work.dirtsai.framework.common.response.Response;
-import work.dirtsai.framework.common.util.JsonUtils;
 import work.dirtsai.mockredbook.auth.constant.RedisKeyConstants;
-import work.dirtsai.mockredbook.auth.constant.RoleConstants;
-import work.dirtsai.mockredbook.auth.domain.dataobject.UserDO;
-import work.dirtsai.mockredbook.auth.domain.mapper.UserDOMapper;
 import work.dirtsai.mockredbook.auth.enums.LoginTypeEnum;
 import work.dirtsai.mockredbook.auth.enums.ResponseCodeEnum;
 import work.dirtsai.mockredbook.auth.model.vo.user.UpdatePasswordReqVO;
 import work.dirtsai.mockredbook.auth.model.vo.user.UserLoginReqVO;
 import work.dirtsai.mockredbook.auth.rpc.UserRpcService;
-import work.dirtsai.mockredbook.auth.service.UserService;
+import work.dirtsai.mockredbook.auth.service.AuthService;
 import work.dirtsai.framework.biz.context.holder.LoginUserContextHolder;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Slf4j
 @Service
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 
     @Resource
     private RedisTemplate redisTemplate;
-
-    @Resource
-    private UserDOMapper userDOMapper;
-
-    @Resource
-    private TransactionTemplate transactionTemplate;
 
     @Resource
     private UserRpcService userRpcService;
@@ -160,13 +145,16 @@ public class UserServiceImpl implements UserService {
         // 获取当前请求对应的用户 ID
         Long userId = LoginUserContextHolder.getUserId();
 
-        UserDO userDO = UserDO.builder()
-                .id(userId)
-                .password(encodePassword)
-                .updateTime(LocalDateTime.now())
-                .build();
-        // 更新密码
-        userDOMapper.updateByPrimaryKeySelective(userDO);
+//        UserDO userDO = UserDO.builder()
+//                .id(userId)
+//                .password(encodePassword)
+//                .updateTime(LocalDateTime.now())
+//                .build();
+//        // 更新密码
+//        userDOMapper.updateByPrimaryKeySelective(userDO);
+
+        // RPC: 调用用户服务：更新密码
+        userRpcService.updatePassword(encodePassword);
 
         return Response.success();
     }

@@ -4,6 +4,7 @@ import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.user.biz.model.vo.UpdateUserInfoReqVO;
 import work.dirtsai.mockredbook.user.dto.req.FindUserByPhoneReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.RegisterUserReqDTO;
+import work.dirtsai.mockredbook.user.dto.req.UpdateUserPasswordReqDTO;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
 
 public interface UserService {
@@ -31,4 +32,13 @@ public interface UserService {
      * @return
      */
     Response<FindUserByPhoneRspDTO> findByPhone(FindUserByPhoneReqDTO findUserByPhoneReqDTO);
+
+    /**
+     * 更新密码
+     *
+     * @param updateUserPasswordReqDTO
+     * @return
+     */
+    Response<?> updatePassword(UpdateUserPasswordReqDTO updateUserPasswordReqDTO);
+
 }

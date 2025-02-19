@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import work.dirtsai.mockredbook.user.api.UserFeignApi;
 import work.dirtsai.mockredbook.user.dto.req.FindUserByPhoneReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.RegisterUserReqDTO;
+import work.dirtsai.mockredbook.user.dto.req.UpdateUserPasswordReqDTO;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
 
 /**
@@ -53,6 +54,18 @@ public class UserRpcService {
         }
 
         return response.getData();
+    }
+
+    /**
+     * 密码更新
+     *
+     * @param encodePassword
+     */
+    public void updatePassword(String encodePassword) {
+        UpdateUserPasswordReqDTO updateUserPasswordReqDTO = new UpdateUserPasswordReqDTO();
+        updateUserPasswordReqDTO.setEncodePassword(encodePassword);
+
+        userFeignApi.updatePassword(updateUserPasswordReqDTO);
     }
 
 }

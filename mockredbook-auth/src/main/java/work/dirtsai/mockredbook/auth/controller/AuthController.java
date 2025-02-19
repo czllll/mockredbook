@@ -8,15 +8,15 @@ import work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.auth.model.vo.user.UpdatePasswordReqVO;
 import work.dirtsai.mockredbook.auth.model.vo.user.UserLoginReqVO;
-import work.dirtsai.mockredbook.auth.service.UserService;
+import work.dirtsai.mockredbook.auth.service.AuthService;
 
 @RestController
 @Slf4j
-public class UserController {
+public class AuthController {
 
 
     @Resource
-    private UserService userService;
+    private AuthService userService;
 
     @PostMapping("/login")
     @ApiOperationLog(description = "用户登录/注册")

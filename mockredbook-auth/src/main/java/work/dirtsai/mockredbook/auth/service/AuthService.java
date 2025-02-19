@@ -4,7 +4,7 @@ import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.auth.model.vo.user.UpdatePasswordReqVO;
 import work.dirtsai.mockredbook.auth.model.vo.user.UserLoginReqVO;
 
-public interface UserService {
+public interface AuthService {
 
     /**
      * 登录与注册

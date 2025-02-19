@@ -7,6 +7,7 @@ import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.user.constant.ApiConstants;
 import work.dirtsai.mockredbook.user.dto.req.FindUserByPhoneReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.RegisterUserReqDTO;
+import work.dirtsai.mockredbook.user.dto.req.UpdateUserPasswordReqDTO;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
 
 @FeignClient(name = ApiConstants.SERVICE_NAME)
@@ -31,6 +32,15 @@ public interface UserFeignApi {
      */
     @PostMapping(value = PREFIX + "/findByPhone")
     Response<FindUserByPhoneRspDTO> findByPhone(@RequestBody FindUserByPhoneReqDTO findUserByPhoneReqDTO);
+
+    /**
+     * 更新密码
+     *
+     * @param updateUserPasswordReqDTO
+     * @return
+     */
+    @PostMapping(value = PREFIX + "/password/update")
+    Response<?> updatePassword(@RequestBody UpdateUserPasswordReqDTO updateUserPasswordReqDTO);
 
 
 }
