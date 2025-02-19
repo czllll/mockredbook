@@ -2,6 +2,7 @@ package work.dirtsai.mockredbook.kv.biz.service;
 
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.kv.dto.req.AddNoteContentReqDTO;
+import work.dirtsai.mockredbook.kv.dto.req.DeleteNoteContentReqDTO;
 import work.dirtsai.mockredbook.kv.dto.req.FindNoteContentReqDTO;
 import work.dirtsai.mockredbook.kv.dto.resp.FindNoteContentRespDTO;
 
@@ -25,4 +26,13 @@ public interface NoteContentService {
      * @return
      */
     Response<FindNoteContentRespDTO> findNoteContent(FindNoteContentReqDTO findNoteContentReqDTO);
+
+    /**
+     * 删除笔记内容
+     *
+     * @param deleteNoteContentReqDTO
+     * @return
+     */
+    Response<?> deleteNoteContent(DeleteNoteContentReqDTO deleteNoteContentReqDTO);
+
 }

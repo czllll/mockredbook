@@ -9,6 +9,7 @@ import work.dirtsai.mockredbook.kv.biz.domain.dataobject.NoteContentDO;
 import work.dirtsai.mockredbook.kv.biz.domain.repository.NoteContentRepository;
 import work.dirtsai.mockredbook.kv.biz.service.NoteContentService;
 import work.dirtsai.mockredbook.kv.dto.req.AddNoteContentReqDTO;
+import work.dirtsai.mockredbook.kv.dto.req.DeleteNoteContentReqDTO;
 import work.dirtsai.mockredbook.kv.dto.req.FindNoteContentReqDTO;
 import work.dirtsai.mockredbook.kv.dto.resp.FindNoteContentRespDTO;
 import work.dirtsai.mockredbook.kv.enums.ResponseCodeEnum;
@@ -71,4 +72,21 @@ public class NoteContentServiceImpl implements NoteContentService {
 
         return Response.success(findNoteContentRspDTO);
     }
+
+    /**
+     * 删除笔记内容
+     *
+     * @param deleteNoteContentReqDTO
+     * @return
+     */
+    @Override
+    public Response<?> deleteNoteContent(DeleteNoteContentReqDTO deleteNoteContentReqDTO) {
+        // 笔记 ID
+        String noteId = deleteNoteContentReqDTO.getNoteId();
+        // 删除笔记内容
+        noteContentRepository.deleteById(UUID.fromString(noteId));
+
+        return Response.success();
+    }
+
 }
