@@ -12,6 +12,7 @@ import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.note.biz.model.vo.FindNoteDetailReqVO;
 import work.dirtsai.mockredbook.note.biz.model.vo.FindNoteDetailRespVO;
 import work.dirtsai.mockredbook.note.biz.model.vo.PublishNoteReqVO;
+import work.dirtsai.mockredbook.note.biz.model.vo.UpdateNoteReqVO;
 import work.dirtsai.mockredbook.note.biz.service.NoteService;
 
 @RestController
@@ -32,6 +33,12 @@ public class NoteController {
     @ApiOperationLog(description = "笔记详情")
     public Response<FindNoteDetailRespVO> findNoteDetail(@Validated @RequestBody FindNoteDetailReqVO findNoteDetailReqVO) {
         return noteService.findNoteDetail(findNoteDetailReqVO);
+    }
+
+    @PostMapping(value = "/update")
+    @ApiOperationLog(description = "笔记修改")
+    public Response<?> updateNote(@Validated @RequestBody UpdateNoteReqVO updateNoteReqVO) {
+        return noteService.updateNote(updateNoteReqVO);
     }
 
 }
