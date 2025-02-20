@@ -89,6 +89,16 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
+
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>mockredbook-kv-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>mockredbook-distributed-id-generator-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

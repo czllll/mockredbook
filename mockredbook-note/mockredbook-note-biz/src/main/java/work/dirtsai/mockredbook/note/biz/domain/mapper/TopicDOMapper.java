@@ -14,4 +14,11 @@ public interface TopicDOMapper {
     int updateByPrimaryKeySelective(TopicDO record);
 
     int updateByPrimaryKey(TopicDO record);
+
+    /**
+     * 根据主键ID查询话题名称
+     * @param id
+     * @return
+     */
+    String selectNameByPrimaryKey(Long id);
 }
