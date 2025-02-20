@@ -1,10 +1,14 @@
 package work.dirtsai.mockredbook.user.biz.service.impl;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import cn.hutool.core.util.RandomUtil;
 import com.google.common.base.Preconditions;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +46,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -58,13 +63,29 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserRoleDOMapper userRoleDOMapper;
+
     @Resource
     private RoleDOMapper roleDOMapper;
+
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
     @Resource
     private DistributedIdGeneratorRpcService distributedIdGeneratorRpcService;
+
+    @Resource(name = "taskExecutor")
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
+
+    /**
+     * 用户信息本地缓存
+     */
+    private static final Cache<Long, FindUserByIdRespDTO> LOCAL_CACHE = Caffeine.newBuilder()
+            .initialCapacity(10000) // 设置初始容量为 10000 个条目
+            .maximumSize(10000) // 设置缓存的最大容量为 10000 个条目
+            .expireAfterWrite(1, TimeUnit.HOURS) // 设置缓存条目在写入后 1 小时过期
+            .build();
+
 
     /**
      * 更新用户信息
@@ -285,11 +306,45 @@ public class UserServiceImpl implements UserService {
     public Response<FindUserByIdRespDTO> findById(FindUserByIdReqDTO findUserByIdReqDTO) {
         Long userId = findUserByIdReqDTO.getId();
 
+        // 先从本地缓存中查询
+        FindUserByIdRespDTO findUserByIdRspDTOLocalCache = LOCAL_CACHE.getIfPresent(userId);
+        if (Objects.nonNull(findUserByIdRspDTOLocalCache)) {
+            log.info("==> 命中了本地缓存；{}", findUserByIdRspDTOLocalCache);
+            return Response.success(findUserByIdRspDTOLocalCache);
+        }
+
+        // 用户缓存 Redis Key
+        String userInfoRedisKey = RedisKeyConstants.buildUserInfoKey(userId);
+
+        // 先从 Redis 缓存中查询
+        String userInfoRedisValue = (String) redisTemplate.opsForValue().get(userInfoRedisKey);
+
+        // 若 Redis 缓存中存在该用户信息
+        if (StringUtils.isNotBlank(userInfoRedisValue)) {
+            // 将存储的 Json 字符串转换成对象，并返回
+            FindUserByIdRespDTO findUserByIdRspDTO = JsonUtils.parseObject(userInfoRedisValue, FindUserByIdRespDTO.class);
+            // 异步线程中将用户信息存入本地缓存
+            threadPoolTaskExecutor.submit(() -> {
+                if (Objects.nonNull(findUserByIdRspDTO)) {
+                    // 写入本地缓存
+                    LOCAL_CACHE.put(userId, findUserByIdRspDTO);
+                }
+            });
+            return Response.success(findUserByIdRspDTO);
+        }
+
+        // 否则, 从数据库中查询
         // 根据用户 ID 查询用户信息
         UserDO userDO = userDOMapper.selectByPrimaryKey(userId);
 
         // 判空
         if (Objects.isNull(userDO)) {
+            threadPoolTaskExecutor.execute(() -> {
+                // 防止缓存穿透，将空数据存入 Redis 缓存 (过期时间不宜设置过长)
+                // 保底1分钟 + 随机秒数
+                long expireSeconds = 60 + RandomUtil.randomInt(60);
+                redisTemplate.opsForValue().set(userInfoRedisKey, "null", expireSeconds, TimeUnit.SECONDS);
+            });
             throw new BizException(ResponseCodeEnum.USER_NOT_FOUND);
         }
 
@@ -299,6 +354,14 @@ public class UserServiceImpl implements UserService {
                 .nickName(userDO.getNickname())
                 .avatar(userDO.getAvatar())
                 .build();
+
+        // 异步将用户信息存入 Redis 缓存，提升响应速度
+        threadPoolTaskExecutor.submit(() -> {
+            // 过期时间（保底1天 + 随机秒数，将缓存过期时间打散，防止同一时间大量缓存失效，导致数据库压力太大）
+            long expireSeconds = 60*60*24 + RandomUtil.randomInt(60*60*24);
+            redisTemplate.opsForValue()
+                    .set(userInfoRedisKey, JsonUtils.toJsonString(findUserByIdRspDTO), expireSeconds, TimeUnit.SECONDS);
+        });
 
         return Response.success(findUserByIdRspDTO);
     }
