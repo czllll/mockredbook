@@ -12,9 +12,11 @@ import work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.user.biz.model.vo.UpdateUserInfoReqVO;
 import work.dirtsai.mockredbook.user.biz.service.UserService;
+import work.dirtsai.mockredbook.user.dto.req.FindUserByIdReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.FindUserByPhoneReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.RegisterUserReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.UpdateUserPasswordReqDTO;
+import work.dirtsai.mockredbook.user.dto.resp.FindUserByIdRespDTO;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
 
 @RestController
@@ -53,6 +55,12 @@ public class UserController {
     @ApiOperationLog(description = "密码更新")
     public Response<?> updatePassword(@Validated @RequestBody UpdateUserPasswordReqDTO updateUserPasswordReqDTO) {
         return userService.updatePassword(updateUserPasswordReqDTO);
+    }
+
+    @PostMapping("/findById")
+    @ApiOperationLog(description = "查询用户信息")
+    public Response<FindUserByIdRespDTO> findById(@Validated @RequestBody FindUserByIdReqDTO findUserByIdReqDTO) {
+        return userService.findById(findUserByIdReqDTO);
     }
 
 }

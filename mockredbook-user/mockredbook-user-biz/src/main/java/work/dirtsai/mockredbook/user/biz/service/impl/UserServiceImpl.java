@@ -30,9 +30,11 @@ import work.dirtsai.mockredbook.user.biz.model.vo.UpdateUserInfoReqVO;
 import work.dirtsai.mockredbook.user.biz.rpc.DistributedIdGeneratorRpcService;
 import work.dirtsai.mockredbook.user.biz.rpc.OssRpcService;
 import work.dirtsai.mockredbook.user.biz.service.UserService;
+import work.dirtsai.mockredbook.user.dto.req.FindUserByIdReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.FindUserByPhoneReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.RegisterUserReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.UpdateUserPasswordReqDTO;
+import work.dirtsai.mockredbook.user.dto.resp.FindUserByIdRespDTO;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
 
 import java.time.LocalDate;
@@ -270,5 +272,34 @@ public class UserServiceImpl implements UserService {
         userDOMapper.updateByPrimaryKeySelective(userDO);
 
         return Response.success();
+    }
+
+
+    /**
+     * 根据用户 ID 查询用户信息
+     *
+     * @param findUserByIdReqDTO
+     * @return
+     */
+    @Override
+    public Response<FindUserByIdRespDTO> findById(FindUserByIdReqDTO findUserByIdReqDTO) {
+        Long userId = findUserByIdReqDTO.getId();
+
+        // 根据用户 ID 查询用户信息
+        UserDO userDO = userDOMapper.selectByPrimaryKey(userId);
+
+        // 判空
+        if (Objects.isNull(userDO)) {
+            throw new BizException(ResponseCodeEnum.USER_NOT_FOUND);
+        }
+
+        // 构建返参
+        FindUserByIdRespDTO findUserByIdRspDTO = FindUserByIdRespDTO.builder()
+                .id(userDO.getId())
+                .nickName(userDO.getNickname())
+                .avatar(userDO.getAvatar())
+                .build();
+
+        return Response.success(findUserByIdRspDTO);
     }
 }
