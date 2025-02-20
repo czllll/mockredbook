@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.user.constant.ApiConstants;
+import work.dirtsai.mockredbook.user.dto.req.FindUserByIdReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.FindUserByPhoneReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.RegisterUserReqDTO;
 import work.dirtsai.mockredbook.user.dto.req.UpdateUserPasswordReqDTO;
+import work.dirtsai.mockredbook.user.dto.resp.FindUserByIdRespDTO;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
 
 @FeignClient(name = ApiConstants.SERVICE_NAME)
@@ -42,5 +44,13 @@ public interface UserFeignApi {
     @PostMapping(value = PREFIX + "/password/update")
     Response<?> updatePassword(@RequestBody UpdateUserPasswordReqDTO updateUserPasswordReqDTO);
 
+    /**
+     * 根据用户 ID 查询用户信息
+     *
+     * @param findUserByIdReqDTO
+     * @return
+     */
+    @PostMapping(value = PREFIX + "/findById")
+    Response<FindUserByIdRespDTO> findById(@RequestBody FindUserByIdReqDTO findUserByIdReqDTO);
 
 }

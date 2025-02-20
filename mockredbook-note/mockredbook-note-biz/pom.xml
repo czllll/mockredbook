@@ -99,6 +99,11 @@
             <groupId>work.dirtsai</groupId>
             <artifactId>mockredbook-distributed-id-generator-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>work.dirtsai.mockeredbook.user.api</groupId>
+            <artifactId>mockredbook-user-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -45,7 +45,7 @@
                              targetProject="src/main/java"/>
 
 
-        <table tableName="t_channel_topic_rel" domainObjectName="ChannelTopicRelDO"
+        <table tableName="t_note" domainObjectName="NoteDO"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

@@ -6,6 +6,8 @@ import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.kv.api.KeyValueFeignApi;
 import work.dirtsai.mockredbook.kv.dto.req.AddNoteContentReqDTO;
 import work.dirtsai.mockredbook.kv.dto.req.DeleteNoteContentReqDTO;
+import work.dirtsai.mockredbook.kv.dto.req.FindNoteContentReqDTO;
+import work.dirtsai.mockredbook.kv.dto.resp.FindNoteContentRespDTO;
 
 import java.util.Objects;
 
@@ -53,6 +55,25 @@ public class KeyValueRpcService {
         }
 
         return true;
+    }
+
+    /**
+     * 查询笔记内容
+     *
+     * @param uuid
+     * @return
+     */
+    public String findNoteContent(String uuid) {
+        FindNoteContentReqDTO findNoteContentReqDTO = new FindNoteContentReqDTO();
+        findNoteContentReqDTO.setUuid(uuid);
+
+        Response<FindNoteContentRespDTO> response = keyValueFeignApi.findNoteContent(findNoteContentReqDTO);
+
+        if (Objects.isNull(response) || !response.isSuccess() || Objects.isNull(response.getData())) {
+            return null;
+        }
+
+        return response.getData().getContent();
     }
 
 }
