@@ -3,18 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-user</artifactId>
+        <artifactId>mockredbook-note</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <groupId>work.dirtsai.mockredbook.user.biz</groupId>
-    <artifactId>mockredbook-user-biz</artifactId>
+    <artifactId>mockredbook-note-biz</artifactId>
     <packaging>jar</packaging>
 
-    <name>mockredbook-user-biz</name>
-    <url>http://maven.apache.org</url>
-
-    <description>用户服务业务模块</description>
+    <name>mockredbook-note-biz</name>
 
 
     <dependencies>
@@ -23,19 +19,22 @@
             <artifactId>mockredbook-common</artifactId>
         </dependency>
 
+        <!-- 业务接口日志组件 -->
         <dependency>
             <groupId>work.dirtsai</groupId>
-            <artifactId>mockredbook-spring-boot-starter-jackson</artifactId>
+            <artifactId>mockredbook-spring-boot-starter-biz-operationlog</artifactId>
         </dependency>
 
+        <!-- 上下文组件 -->
         <dependency>
             <groupId>work.dirtsai</groupId>
             <artifactId>mockredbook-spring-boot-starter-biz-context</artifactId>
         </dependency>
 
+        <!-- Jackson 组件 -->
         <dependency>
             <groupId>work.dirtsai</groupId>
-            <artifactId>mockredbook-spring-boot-starter-biz-operationlog</artifactId>
+            <artifactId>mockredbook-spring-boot-starter-jackson</artifactId>
         </dependency>
 
         <dependency>
@@ -47,17 +46,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
-
-        <!-- 服务发现 -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
 
         <!-- Mybatis -->
@@ -79,8 +67,14 @@
         </dependency>
 
         <dependency>
-            <groupId>work.dirtsai.mockredbook.oss</groupId>
-            <artifactId>mockredbook-oss-api</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+
+        <!-- 服务发现 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
 
         <!-- Redis -->
@@ -95,17 +89,6 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>work.dirtsai.mockeredbook.user.api</groupId>
-            <artifactId>mockredbook-user-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>work.dirtsai</groupId>
-            <artifactId>mockredbook-distributed-id-generator-api</artifactId>
-        </dependency>
-
-
     </dependencies>
 
     <build>
@@ -114,12 +97,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
-
+            <!-- 代码生成器 -->
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
+
 </project>

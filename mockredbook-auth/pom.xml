@@ -27,7 +27,7 @@
             <artifactId>mockredbook-spring-boot-starter-biz-operationlog</artifactId>
         </dependency>
         <dependency>
-            <groupId>work.dirtsai.mockredbook.framework</groupId>
+            <groupId>work.dirtsai</groupId>
             <artifactId>mockredbook-spring-boot-starter-biz-context</artifactId>
         </dependency>
         <dependency>

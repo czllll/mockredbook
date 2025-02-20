@@ -82,7 +82,7 @@
 
         <!-- 上下文组件 -->
         <dependency>
-            <groupId>work.dirtsai.mockredbook.framework</groupId>
+            <groupId>work.dirtsai</groupId>
             <artifactId>mockredbook-spring-boot-starter-biz-context</artifactId>
         </dependency>
 

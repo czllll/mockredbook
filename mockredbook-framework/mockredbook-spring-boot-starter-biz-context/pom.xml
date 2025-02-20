@@ -7,7 +7,6 @@
         <version>${revision}</version>
     </parent>
 
-    <groupId>work.dirtsai.mockredbook.framework</groupId>
     <artifactId>mockredbook-spring-boot-starter-biz-context</artifactId>
     <packaging>jar</packaging>
 

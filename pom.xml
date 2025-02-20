@@ -27,6 +27,8 @@
     <module>mockredbook-kv/mockredbook-kv-api</module>
     <module>mockredbook-kv/mockredbook-kv-biz</module>
     <module>mockredbook-distributed-id-generator</module>
+    <module>mockredbook-note</module>
+    <module>mockredbook-note/mockredbook-note-biz</module>
   </modules>
 
   <properties>
@@ -94,7 +96,7 @@
       </dependency>
 
       <dependency>
-        <groupId>work.dirtsai.mockredbook.framework</groupId>
+        <groupId>work.dirtsai</groupId>
         <artifactId>mockredbook-spring-boot-starter-biz-context</artifactId>
         <version>${revision}</version>
       </dependency>
@@ -288,12 +290,6 @@
         <version>${revision}</version>
       </dependency>
 
-      <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-resolver-dns-native-macos</artifactId>
-        <version>${netty.version}</version>
-        <classifier>osx-aarch_64</classifier> <!-- M1/M2 Mac -->
-      </dependency>
 
 
 
