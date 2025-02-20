@@ -28,4 +28,10 @@ public class RedisKeyConstants {
     public static String buildUserRoleKey(Long userId) {
         return USER_ROLES_KEY_PREFIX + userId;
     }
+
+    /**
+     * Sa-Token 登录的 Token KEY 前缀
+     */
+    public static final String SA_TOKEN_TOKEN_KEY_PREFIX = "Authorization:login:token:";
+
 }

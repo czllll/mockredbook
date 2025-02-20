@@ -100,6 +100,11 @@
             <artifactId>mockredbook-user-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>mockredbook-distributed-id-generator-api</artifactId>
+        </dependency>
+
 
     </dependencies>
 

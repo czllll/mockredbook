@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import work.dirtsai.framework.common.exception.BizException;
 import work.dirtsai.framework.common.response.Response;
+import work.dirtsai.framework.common.util.JsonUtils;
 import work.dirtsai.mockredbook.auth.constant.RedisKeyConstants;
 import work.dirtsai.mockredbook.auth.enums.LoginTypeEnum;
 import work.dirtsai.mockredbook.auth.enums.ResponseCodeEnum;
@@ -22,6 +23,8 @@ import work.dirtsai.mockredbook.auth.service.AuthService;
 import work.dirtsai.framework.biz.context.holder.LoginUserContextHolder;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -103,6 +106,16 @@ public class AuthServiceImpl implements AuthService {
 
         // SaToken 登录用户, 入参为用户 ID
         StpUtil.login(userId);
+
+        //TODO 用户登录时，将用户角色同步到redis
+//        // 将该用户的角色 ID 存入 Redis 中
+//        List<String> roles = new ArrayList<>(1);
+//        roles.add(roleDO.getRoleKey());
+//
+//        String userRolesKey = RedisKeyConstants.buildUserRoleKey(userId);
+//        redisTemplate.opsForValue().set(userRolesKey, JsonUtils.toJsonString(roles));
+//
+
 
         // 获取 Token 令牌
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
