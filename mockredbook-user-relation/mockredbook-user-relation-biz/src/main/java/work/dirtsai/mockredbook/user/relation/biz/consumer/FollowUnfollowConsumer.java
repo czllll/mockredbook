@@ -1,5 +1,6 @@
 package work.dirtsai.mockredbook.user.relation.biz.consumer;
 
+import com.google.common.util.concurrent.RateLimiter;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.Message;
@@ -34,9 +35,16 @@ public class FollowUnfollowConsumer implements RocketMQListener<Message> {
     private FansDOMapper fansDOMapper;
     @Resource
     private TransactionTemplate transactionTemplate;
+    @Resource
+    private RateLimiter rateLimiter;
+
+
 
     @Override
     public void onMessage(Message message) {
+
+        // 流量削峰：通过获取令牌，如果没有令牌可用，将阻塞，直到获得
+        rateLimiter.acquire();
         // 消息体
         String bodyJsonStr = new String(message.getBody());
         // 标签
