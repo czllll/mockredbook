@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.user.relation.biz.model.vo.FollowUserReqVO;
+import work.dirtsai.mockredbook.user.relation.biz.model.vo.UnfollowUserReqVO;
 import work.dirtsai.mockredbook.user.relation.biz.service.RelationService;
 
 
@@ -25,6 +26,12 @@ public class RelationController {
     @ApiOperationLog(description = "关注用户")
     public Response<?> follow(@Validated @RequestBody FollowUserReqVO followUserReqVO) {
         return relationService.follow(followUserReqVO);
+    }
+
+    @PostMapping("/unfollow")
+    @ApiOperationLog(description = "取关用户")
+    public Response<?> unfollow(@Validated @RequestBody UnfollowUserReqVO unfollowUserReqVO) {
+        return relationService.unfollow(unfollowUserReqVO);
     }
 
 }
