@@ -29,6 +29,7 @@
     <module>mockredbook-distributed-id-generator</module>
     <module>mockredbook-note</module>
     <module>mockredbook-note/mockredbook-note-biz</module>
+    <module>mockredbook-user-relation</module>
   </modules>
 
   <properties>
