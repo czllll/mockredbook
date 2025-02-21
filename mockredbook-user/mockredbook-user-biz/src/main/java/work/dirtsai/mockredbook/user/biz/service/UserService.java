@@ -2,12 +2,12 @@ package work.dirtsai.mockredbook.user.biz.service;
 
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.user.biz.model.vo.UpdateUserInfoReqVO;
-import work.dirtsai.mockredbook.user.dto.req.FindUserByIdReqDTO;
-import work.dirtsai.mockredbook.user.dto.req.FindUserByPhoneReqDTO;
-import work.dirtsai.mockredbook.user.dto.req.RegisterUserReqDTO;
-import work.dirtsai.mockredbook.user.dto.req.UpdateUserPasswordReqDTO;
+import work.dirtsai.mockredbook.user.dto.req.*;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByIdRespDTO;
+import work.dirtsai.mockredbook.user.dto.resp.FindUserByIdRspDTO;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -51,4 +51,12 @@ public interface UserService {
      * @return
      */
     Response<FindUserByIdRespDTO> findById(FindUserByIdReqDTO findUserByIdReqDTO);
+
+    /**
+     * 批量根据用户 ID 查询用户信息
+     *
+     * @param findUsersByIdsReqDTO
+     * @return
+     */
+    Response<List<FindUserByIdRspDTO>> findByIds(FindUsersByIdsReqDTO findUsersByIdsReqDTO);
 }

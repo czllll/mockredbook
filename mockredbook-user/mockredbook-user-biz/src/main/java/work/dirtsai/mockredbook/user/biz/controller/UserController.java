@@ -12,12 +12,12 @@ import work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.user.biz.model.vo.UpdateUserInfoReqVO;
 import work.dirtsai.mockredbook.user.biz.service.UserService;
-import work.dirtsai.mockredbook.user.dto.req.FindUserByIdReqDTO;
-import work.dirtsai.mockredbook.user.dto.req.FindUserByPhoneReqDTO;
-import work.dirtsai.mockredbook.user.dto.req.RegisterUserReqDTO;
-import work.dirtsai.mockredbook.user.dto.req.UpdateUserPasswordReqDTO;
+import work.dirtsai.mockredbook.user.dto.req.*;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByIdRespDTO;
+import work.dirtsai.mockredbook.user.dto.resp.FindUserByIdRspDTO;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -61,6 +61,12 @@ public class UserController {
     @ApiOperationLog(description = "查询用户信息")
     public Response<FindUserByIdRespDTO> findById(@Validated @RequestBody FindUserByIdReqDTO findUserByIdReqDTO) {
         return userService.findById(findUserByIdReqDTO);
+    }
+
+    @PostMapping("/findByIds")
+    @ApiOperationLog(description = "批量查询用户信息")
+    public Response<List<FindUserByIdRspDTO>> findByIds(@Validated @RequestBody FindUsersByIdsReqDTO findUsersByIdsReqDTO) {
+        return userService.findByIds(findUsersByIdsReqDTO);
     }
 
 }

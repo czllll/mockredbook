@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FindUserByIdRespDTO {
+public class FindUserByIdRspDTO {
 
     /**
      * 用户 ID
@@ -30,5 +30,4 @@ public class FindUserByIdRespDTO {
      * 简介
      */
     private String introduction;
-
 }

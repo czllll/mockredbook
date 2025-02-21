@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.user.constant.ApiConstants;
-import work.dirtsai.mockredbook.user.dto.req.FindUserByIdReqDTO;
-import work.dirtsai.mockredbook.user.dto.req.FindUserByPhoneReqDTO;
-import work.dirtsai.mockredbook.user.dto.req.RegisterUserReqDTO;
-import work.dirtsai.mockredbook.user.dto.req.UpdateUserPasswordReqDTO;
+import work.dirtsai.mockredbook.user.dto.req.*;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByIdRespDTO;
+import work.dirtsai.mockredbook.user.dto.resp.FindUserByIdRspDTO;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByPhoneRspDTO;
+
+import java.util.List;
 
 @FeignClient(name = ApiConstants.SERVICE_NAME)
 public interface UserFeignApi {
@@ -52,5 +52,15 @@ public interface UserFeignApi {
      */
     @PostMapping(value = PREFIX + "/findById")
     Response<FindUserByIdRespDTO> findById(@RequestBody FindUserByIdReqDTO findUserByIdReqDTO);
+
+    /**
+     * 批量查询用户信息
+     *
+     * @param findUsersByIdsReqDTO
+     * @return
+     */
+    @PostMapping(value = PREFIX + "/findByIds")
+    Response<List<FindUserByIdRspDTO>> findByIds(@RequestBody FindUsersByIdsReqDTO findUsersByIdsReqDTO);
+
 
 }
