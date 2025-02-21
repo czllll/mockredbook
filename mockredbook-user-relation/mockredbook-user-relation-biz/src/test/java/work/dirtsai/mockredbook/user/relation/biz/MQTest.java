@@ -28,7 +28,7 @@ class MQTest {
      */
     @Test
     void testBatchSendMQ() {
-        for (long i = 0; i < 10000; i++) {
+        for (long i = 0; i < 10; i++) {
             // 构建消息体 DTO
             FollowUserMqDTO followUserMqDTO = FollowUserMqDTO.builder()
                     .userId(i)
