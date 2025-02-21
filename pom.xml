@@ -277,7 +277,7 @@
 
 
       <dependency>
-        <groupId>work.dirtsai.mockeredbook.user.api</groupId>
+        <groupId>work.dirtsai</groupId>
         <artifactId>mockredbook-user-api</artifactId>
         <version>${revision}</version>
       </dependency>

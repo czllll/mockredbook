@@ -7,7 +7,6 @@
         <version>${revision}</version>
     </parent>
 
-    <groupId>work.dirtsai.mockredbook.user.biz</groupId>
     <artifactId>mockredbook-user-biz</artifactId>
     <packaging>jar</packaging>
 
@@ -96,7 +95,7 @@
         </dependency>
 
         <dependency>
-            <groupId>work.dirtsai.mockeredbook.user.api</groupId>
+            <groupId>work.dirtsai</groupId>
             <artifactId>mockredbook-user-api</artifactId>
         </dependency>
 
