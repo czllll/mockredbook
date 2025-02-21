@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog;
 import work.dirtsai.framework.common.response.Response;
-import work.dirtsai.mockredbook.note.biz.model.vo.FindNoteDetailReqVO;
-import work.dirtsai.mockredbook.note.biz.model.vo.FindNoteDetailRespVO;
-import work.dirtsai.mockredbook.note.biz.model.vo.PublishNoteReqVO;
-import work.dirtsai.mockredbook.note.biz.model.vo.UpdateNoteReqVO;
+import work.dirtsai.mockredbook.note.biz.model.vo.*;
 import work.dirtsai.mockredbook.note.biz.service.NoteService;
 
 @RestController
@@ -39,6 +36,12 @@ public class NoteController {
     @ApiOperationLog(description = "笔记修改")
     public Response<?> updateNote(@Validated @RequestBody UpdateNoteReqVO updateNoteReqVO) {
         return noteService.updateNote(updateNoteReqVO);
+    }
+
+    @PostMapping(value = "/delete")
+    @ApiOperationLog(description = "删除笔记")
+    public Response<?> deleteNote(@Validated @RequestBody DeleteNoteReqVO deleteNoteReqVO) {
+        return noteService.deleteNote(deleteNoteReqVO);
     }
 
 }

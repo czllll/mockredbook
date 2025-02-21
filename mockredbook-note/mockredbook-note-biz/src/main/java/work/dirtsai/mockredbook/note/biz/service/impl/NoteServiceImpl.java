@@ -29,10 +29,7 @@ import work.dirtsai.mockredbook.note.biz.enums.NoteStatusEnum;
 import work.dirtsai.mockredbook.note.biz.enums.NoteTypeEnum;
 import work.dirtsai.mockredbook.note.biz.enums.NoteVisibleEnum;
 import work.dirtsai.mockredbook.note.biz.enums.ResponseCodeEnum;
-import work.dirtsai.mockredbook.note.biz.model.vo.FindNoteDetailReqVO;
-import work.dirtsai.mockredbook.note.biz.model.vo.FindNoteDetailRespVO;
-import work.dirtsai.mockredbook.note.biz.model.vo.PublishNoteReqVO;
-import work.dirtsai.mockredbook.note.biz.model.vo.UpdateNoteReqVO;
+import work.dirtsai.mockredbook.note.biz.model.vo.*;
 import work.dirtsai.mockredbook.note.biz.rpc.DistributedIdGeneratorRpcService;
 import work.dirtsai.mockredbook.note.biz.rpc.KeyValueRpcService;
 import work.dirtsai.mockredbook.note.biz.rpc.UserRpcService;
@@ -461,6 +458,44 @@ public class NoteServiceImpl implements NoteService {
     public void deleteNoteLocalCache(Long noteId) {
         LOCAL_CACHE.invalidate(noteId);
     }
+
+    /**
+     * 删除笔记
+     *
+     * @param deleteNoteReqVO
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Response<?> deleteNote(DeleteNoteReqVO deleteNoteReqVO) {
+        // 笔记 ID
+        Long noteId = deleteNoteReqVO.getId();
+
+        // 逻辑删除
+        NoteDO noteDO = NoteDO.builder()
+                .id(noteId)
+                .status(NoteStatusEnum.DELETED.getCode())
+                .updateTime(LocalDateTime.now())
+                .build();
+
+        int count = noteDOMapper.updateByPrimaryKeySelective(noteDO);
+
+        // 若影响的行数为 0，则表示该笔记不存在
+        if (count == 0) {
+            throw new BizException(ResponseCodeEnum.NOTE_NOT_FOUND);
+        }
+
+        // 删除redis缓存
+        String noteDetailRedisKey = RedisKeyConstants.buildNoteDetailKey(noteId);
+        redisTemplate.delete(noteDetailRedisKey);
+
+        // 同步发送广播模式 MQ，将所有实例中的本地缓存都删除掉
+        rocketMQTemplate.syncSend(MQConstants.TOPIC_DELETE_NOTE_LOCAL_CACHE, noteId);
+        log.info("====> MQ：删除笔记本地缓存发送成功...");
+
+        return Response.success();
+    }
+
 
 }
 

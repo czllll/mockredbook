@@ -1,10 +1,7 @@
 package work.dirtsai.mockredbook.note.biz.service;
 
 import work.dirtsai.framework.common.response.Response;
-import work.dirtsai.mockredbook.note.biz.model.vo.FindNoteDetailReqVO;
-import work.dirtsai.mockredbook.note.biz.model.vo.FindNoteDetailRespVO;
-import work.dirtsai.mockredbook.note.biz.model.vo.PublishNoteReqVO;
-import work.dirtsai.mockredbook.note.biz.model.vo.UpdateNoteReqVO;
+import work.dirtsai.mockredbook.note.biz.model.vo.*;
 
 /**
  * 笔记业务
@@ -37,4 +34,11 @@ public interface NoteService {
      * @param noteId
      */
     void deleteNoteLocalCache(Long noteId);
+
+    /**
+     * 删除笔记
+     * @param deleteNoteReqVO
+     * @return
+     */
+    Response<?> deleteNote(DeleteNoteReqVO deleteNoteReqVO);
 }
