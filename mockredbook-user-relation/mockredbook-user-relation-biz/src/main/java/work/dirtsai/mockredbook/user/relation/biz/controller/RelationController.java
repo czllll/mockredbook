@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog;
+import work.dirtsai.framework.common.response.PageResponse;
 import work.dirtsai.framework.common.response.Response;
+import work.dirtsai.mockredbook.user.relation.biz.model.vo.FindFollowingListReqVO;
+import work.dirtsai.mockredbook.user.relation.biz.model.vo.FindFollowingUserRspVO;
 import work.dirtsai.mockredbook.user.relation.biz.model.vo.FollowUserReqVO;
 import work.dirtsai.mockredbook.user.relation.biz.model.vo.UnfollowUserReqVO;
 import work.dirtsai.mockredbook.user.relation.biz.service.RelationService;
@@ -32,6 +35,12 @@ public class RelationController {
     @ApiOperationLog(description = "取关用户")
     public Response<?> unfollow(@Validated @RequestBody UnfollowUserReqVO unfollowUserReqVO) {
         return relationService.unfollow(unfollowUserReqVO);
+    }
+
+    @PostMapping("/following/list")
+    @ApiOperationLog(description = "查询用户关注列表")
+    public PageResponse<FindFollowingUserRspVO> findFollowingList(@Validated @RequestBody FindFollowingListReqVO findFollowingListReqVO) {
+        return relationService.findFollowingList(findFollowingListReqVO);
     }
 
 }
