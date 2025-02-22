@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog;
 import work.dirtsai.framework.common.response.PageResponse;
 import work.dirtsai.framework.common.response.Response;
-import work.dirtsai.mockredbook.user.relation.biz.model.vo.FindFollowingListReqVO;
-import work.dirtsai.mockredbook.user.relation.biz.model.vo.FindFollowingUserRspVO;
-import work.dirtsai.mockredbook.user.relation.biz.model.vo.FollowUserReqVO;
-import work.dirtsai.mockredbook.user.relation.biz.model.vo.UnfollowUserReqVO;
+import work.dirtsai.mockredbook.user.relation.biz.model.vo.*;
 import work.dirtsai.mockredbook.user.relation.biz.service.RelationService;
 
 
@@ -41,6 +38,13 @@ public class RelationController {
     @ApiOperationLog(description = "查询用户关注列表")
     public PageResponse<FindFollowingUserRspVO> findFollowingList(@Validated @RequestBody FindFollowingListReqVO findFollowingListReqVO) {
         return relationService.findFollowingList(findFollowingListReqVO);
+
+
+    }
+    @PostMapping("/fans/list")
+    @ApiOperationLog(description = "查询用户粉丝列表")
+    public PageResponse<FindFansUserRspVO> findFansList(@Validated @RequestBody FindFansListReqVO findFansListReqVO) {
+        return relationService.findFansList(findFansListReqVO);
     }
 
 }

@@ -2,10 +2,7 @@ package work.dirtsai.mockredbook.user.relation.biz.service;
 
 import work.dirtsai.framework.common.response.PageResponse;
 import work.dirtsai.framework.common.response.Response;
-import work.dirtsai.mockredbook.user.relation.biz.model.vo.FindFollowingListReqVO;
-import work.dirtsai.mockredbook.user.relation.biz.model.vo.FindFollowingUserRspVO;
-import work.dirtsai.mockredbook.user.relation.biz.model.vo.FollowUserReqVO;
-import work.dirtsai.mockredbook.user.relation.biz.model.vo.UnfollowUserReqVO;
+import work.dirtsai.mockredbook.user.relation.biz.model.vo.*;
 
 
 public interface RelationService {
@@ -31,4 +28,11 @@ public interface RelationService {
      */
     PageResponse<FindFollowingUserRspVO> findFollowingList(FindFollowingListReqVO findFollowingListReqVO);
 
+
+    /**
+     * 查询粉丝列表
+     * @param findFansListReqVO
+     * @return
+     */
+    PageResponse<FindFansUserRspVO> findFansList(FindFansListReqVO findFansListReqVO);
 }
