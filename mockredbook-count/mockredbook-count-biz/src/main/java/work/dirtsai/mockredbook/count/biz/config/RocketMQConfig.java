@@ -1,8 +1,9 @@
-package work.dirtsai.mockredbook.biz.domain.config;
+package work.dirtsai.mockredbook.count.biz.config;
 
 import org.apache.rocketmq.spring.autoconfigure.RocketMQAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
 
 @Configuration
 @Import(RocketMQAutoConfiguration.class)

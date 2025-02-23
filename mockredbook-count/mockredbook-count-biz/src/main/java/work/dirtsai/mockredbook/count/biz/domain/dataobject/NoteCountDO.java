@@ -1,4 +1,5 @@
 package work.dirtsai.mockredbook.count.biz.domain.dataobject;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +19,4 @@ public class NoteCountDO {
     private Long collectTotal;
 
     private Long commentTotal;
-
 }

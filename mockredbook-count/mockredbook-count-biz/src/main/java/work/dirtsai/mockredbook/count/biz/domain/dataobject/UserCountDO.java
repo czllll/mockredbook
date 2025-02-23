@@ -23,6 +23,4 @@ public class UserCountDO {
     private Long likeTotal;
 
     private Long collectTotal;
-
-
 }

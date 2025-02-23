@@ -1,4 +1,4 @@
-package work.dirtsai.mockredbook.biz.domain.config;
+package work.dirtsai.mockredbook.count.biz.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +7,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+/**
 
+ * @description: RedisTemplate 配置
+ **/
 @Configuration
 public class RedisTemplateConfig {
 
