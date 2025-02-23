@@ -23,4 +23,10 @@ public class RedisKeyConstants {
     }
 
 
+    /**
+     * Hash Field: 关注总数
+     */
+    public static final String FIELD_FOLLOWING_TOTAL = "followingTotal";
+
+
 }

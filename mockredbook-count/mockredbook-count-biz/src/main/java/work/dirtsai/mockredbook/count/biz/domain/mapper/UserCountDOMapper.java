@@ -25,4 +25,13 @@ public interface UserCountDOMapper {
      */
     int insertOrUpdateFansTotalByUserId(@Param("count") Integer count, @Param("userId") Long userId);
 
+
+    /**
+     * 添加或更新关注总数
+     * @param count
+     * @param userId
+     * @return
+     */
+    int insertOrUpdateFollowingTotalByUserId(@Param("count") Integer count, @Param("userId") Long userId);
+
 }
