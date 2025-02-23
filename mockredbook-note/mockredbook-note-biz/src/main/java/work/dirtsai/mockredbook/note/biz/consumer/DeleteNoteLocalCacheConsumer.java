@@ -11,7 +11,7 @@ import work.dirtsai.mockredbook.note.biz.service.NoteService;
 
 @Component
 @Slf4j
-@RocketMQMessageListener(consumerGroup = "mockbook_group", // Group
+@RocketMQMessageListener(consumerGroup = "mockbook_group_" + MQConstants.TOPIC_DELETE_NOTE_LOCAL_CACHE, // Group
         topic = MQConstants.TOPIC_DELETE_NOTE_LOCAL_CACHE, // 消费的主题 Topic
         messageModel = MessageModel.BROADCASTING) // 广播模式
 public class DeleteNoteLocalCacheConsumer implements RocketMQListener<String> {

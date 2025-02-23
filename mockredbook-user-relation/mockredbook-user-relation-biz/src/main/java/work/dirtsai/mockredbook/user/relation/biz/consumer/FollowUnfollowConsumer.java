@@ -33,7 +33,7 @@ import java.util.Objects;
  * 关注取关MQ消费者
  */
 @Component
-@RocketMQMessageListener(consumerGroup = "mockbook_group", // Group 组
+@RocketMQMessageListener(consumerGroup = "mockbook_group_" + MQConstants.TOPIC_FOLLOW_OR_UNFOLLOW, // Group 组
         topic = MQConstants.TOPIC_FOLLOW_OR_UNFOLLOW ,// 消费的 Topic 主题
         consumeMode = ConsumeMode.ORDERLY
 )

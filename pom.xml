@@ -30,6 +30,7 @@
     <module>mockredbook-note</module>
     <module>mockredbook-note/mockredbook-note-biz</module>
     <module>mockredbook-user-relation</module>
+    <module>mockredbook-count</module>
   </modules>
 
   <properties>
