@@ -34,6 +34,12 @@ public class RedisKeyConstants {
 
 
     /**
+     * Hash Field: 笔记发布总数
+     */
+    public static final String FIELD_NOTE_TOTAL = "noteTotal";
+
+
+    /**
      * 构建用户维度计数 Key
      * @param userId
      * @return
