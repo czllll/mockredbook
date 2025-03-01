@@ -108,7 +108,6 @@ public class TodayNoteLikeIncrementData2DBConsumer implements RocketMQListener<S
             // 4. 数据库写入成功后，再添加布隆过滤器中
             RedisScript<Long> bloomAddScript = RedisScript.of("return redis.call('BF.ADD', KEYS[1], ARGV[1])", Long.class);
             redisTemplate.execute(bloomAddScript, Collections.singletonList(bloomKey), noteId);
-            log.info("==========================123");
         }
     }
 
