@@ -31,6 +31,7 @@
     <module>mockredbook-note/mockredbook-note-biz</module>
     <module>mockredbook-user-relation</module>
     <module>mockredbook-count</module>
+    <module>mockredibook-data-align</module>
   </modules>
 
   <properties>
@@ -74,6 +75,7 @@
     <caffeine.version>3.1.8</caffeine.version>
     <rocketmq.version>2.2.3</rocketmq.version>
     <buffertrigger.version>0.2.21</buffertrigger.version>
+    <xxl-job.version>2.4.1</xxl-job.version>
 
 
 
@@ -318,6 +320,12 @@
         <version>${buffertrigger.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>com.xuxueli</groupId>
+        <artifactId>xxl-job-core</artifactId>
+        <version>${xxl-job.version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -376,6 +384,8 @@
               <artifactId>mysql-connector-java</artifactId>
               <version>${mysql-connector-java.version}</version>
             </dependency>
+
+
           </dependencies>
         </plugin>
 
