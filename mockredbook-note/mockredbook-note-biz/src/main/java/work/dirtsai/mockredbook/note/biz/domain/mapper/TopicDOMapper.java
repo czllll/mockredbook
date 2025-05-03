@@ -1,6 +1,9 @@
 package work.dirtsai.mockredbook.note.biz.domain.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import work.dirtsai.mockredbook.note.biz.domain.dataobject.TopicDO;
+
+import java.util.List;
 
 public interface TopicDOMapper {
     int deleteByPrimaryKey(Long id);
@@ -21,4 +24,18 @@ public interface TopicDOMapper {
      * @return
      */
     String selectNameByPrimaryKey(Long id);
+
+    /**
+     * 模糊名差咋后topic
+     * @param keyword
+     * @return
+     */
+    List<TopicDO> selectByLikeName(String keyword);
+
+    List<TopicDO> selectByTopicIdIn(List<Long> topicIds);
+
+    TopicDO selectByTopicName(String name);
+
+    int batchInsert(@Param("newTopics") List<TopicDO> newTopics);
+
 }

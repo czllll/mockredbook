@@ -5,5 +5,5 @@ import work.dirtsai.mockredbook.auth.model.vo.verificationcode.SendVerificationC
 
 public interface VerificationCodeService {
 
-    Response<?> send(SendVerificationCodeReqVO sendVerificationCodeReqVO);
+    Response<String> send(SendVerificationCodeReqVO sendVerificationCodeReqVO);
 }

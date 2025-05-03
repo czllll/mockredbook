@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients(basePackages = "work.dirtsai.mockredbook")
-public class MockredbookAuthApplication {
+public class    MockredbookAuthApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MockredbookAuthApplication.class, args);

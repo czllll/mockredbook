@@ -139,4 +139,10 @@
     ON DUPLICATE KEY UPDATE note_total = note_total + (#{count});
   </insert>
 
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_count
+    where user_id = #{userId} limit 1
+  </select>
 </mapper>

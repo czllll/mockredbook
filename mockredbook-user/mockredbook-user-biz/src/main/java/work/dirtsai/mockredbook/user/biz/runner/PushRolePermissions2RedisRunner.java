@@ -23,6 +23,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+/**
+ * 将角色、权限信息同步到redis
+ */
 @Component
 @Slf4j
 public class PushRolePermissions2RedisRunner implements ApplicationRunner {
@@ -43,7 +46,6 @@ public class PushRolePermissions2RedisRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         log.info("==> 服务启动，开始同步角色权限数据到 Redis 中...");
 
-        // todo
         try{
             // 是否能够同步数据: 原子操作，只有在键 PUSH_PERMISSION_FLAG 不存在时，才会设置该键的值为 "1"，并设置过期时间为 1 天
             boolean canPushed = Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(PUSH_PERMISSION_FLAG, "1", 1, TimeUnit.DAYS));

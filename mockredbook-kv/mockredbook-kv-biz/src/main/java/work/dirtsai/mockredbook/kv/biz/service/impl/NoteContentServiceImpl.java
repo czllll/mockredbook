@@ -12,7 +12,7 @@ import work.dirtsai.mockredbook.kv.dto.req.AddNoteContentReqDTO;
 import work.dirtsai.mockredbook.kv.dto.req.DeleteNoteContentReqDTO;
 import work.dirtsai.mockredbook.kv.dto.req.FindNoteContentReqDTO;
 import work.dirtsai.mockredbook.kv.dto.resp.FindNoteContentRespDTO;
-import work.dirtsai.mockredbook.kv.enums.ResponseCodeEnum;
+import work.dirtsai.mockredbook.kv.biz.enums.ResponseCodeEnum;
 
 
 import java.util.Optional;

@@ -123,7 +123,7 @@ public class RelationServiceImpl implements RelationService {
             // 保底1天+随机秒数
             long expireSeconds = 60*60*24 + RandomUtil.randomInt(60*60*24);
 
-            // 若记录为空，直接 ZADD 对象, 并设置过期时间
+            // 若DB记录为空，直接 ZADD 对象, 并设置过期时间
             if (CollUtil.isEmpty(followingDOS)) {
                 DefaultRedisScript<Long> script2 = new DefaultRedisScript<>();
                 script2.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/follow_add_and_expire.lua")));
@@ -381,8 +381,7 @@ public class RelationServiceImpl implements RelationService {
                 // 提取所有用户 ID 到集合中
                 List<Long> userIds = followingUserIdsSet.stream().map(object -> Long.valueOf(object.toString())).toList();
 
-                // RPC: 批量查询用户信息
-                List<FindUserByIdRspDTO> findUserByIdRspDTOS = userRpcService.findByIds(userIds);
+                findFollowingUserRspVOS = rpcUserServiceAndDTO2VO(userIds, findFollowingUserRspVOS);
 
 
             }

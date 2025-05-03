@@ -107,15 +107,6 @@ public class AuthServiceImpl implements AuthService {
         // SaToken 登录用户, 入参为用户 ID
         StpUtil.login(userId);
 
-        //TODO 用户登录时，将用户角色同步到redis
-//        // 将该用户的角色 ID 存入 Redis 中
-//        List<String> roles = new ArrayList<>(1);
-//        roles.add(roleDO.getRoleKey());
-//
-//        String userRolesKey = RedisKeyConstants.buildUserRoleKey(userId);
-//        redisTemplate.opsForValue().set(userRolesKey, JsonUtils.toJsonString(roles));
-//
-
 
         // 获取 Token 令牌
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();

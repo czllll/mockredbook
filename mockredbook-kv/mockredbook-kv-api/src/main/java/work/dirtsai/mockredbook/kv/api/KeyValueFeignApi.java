@@ -5,10 +5,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.mockredbook.kv.constant.ApiConstants;
-import work.dirtsai.mockredbook.kv.dto.req.AddNoteContentReqDTO;
-import work.dirtsai.mockredbook.kv.dto.req.DeleteNoteContentReqDTO;
-import work.dirtsai.mockredbook.kv.dto.req.FindNoteContentReqDTO;
+import work.dirtsai.mockredbook.kv.dto.req.*;
+import work.dirtsai.mockredbook.kv.dto.resp.FindCommentContentRspDTO;
 import work.dirtsai.mockredbook.kv.dto.resp.FindNoteContentRespDTO;
+
+import java.util.List;
 
 @FeignClient(name = ApiConstants.SERVICE_NAME)
 public interface KeyValueFeignApi {
@@ -24,5 +25,15 @@ public interface KeyValueFeignApi {
 
     @PostMapping(value = PREFIX + "/note/content/delete")
     Response<?> deleteNoteContent(@RequestBody DeleteNoteContentReqDTO deleteNoteContentReqDTO);
+
+
+    @PostMapping(value = PREFIX + "/comment/content/batchAdd")
+    Response<?> batchAddCommentContent(@RequestBody BatchAddCommentContentReqDTO batchAddCommentContentReqDTO);
+
+    @PostMapping(value = PREFIX + "/comment/content/batchFind")
+    Response<List<FindCommentContentRspDTO>> batchFindCommentContent(@RequestBody BatchFindCommentContentReqDTO batchFindCommentContentReqDTO);
+
+    @PostMapping(value = PREFIX + "/comment/content/delete")
+    Response<?> deleteCommentContent(@RequestBody DeleteCommentContentReqDTO deleteCommentContentReqDTO);
 
 }

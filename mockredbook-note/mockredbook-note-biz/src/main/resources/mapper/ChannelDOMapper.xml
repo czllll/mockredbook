@@ -90,4 +90,8 @@
       is_deleted = #{isDeleted,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name from t_channel where is_deleted = 0
+  </select>
 </mapper>

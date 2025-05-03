@@ -109,7 +109,10 @@
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>mockredbook-count-api</artifactId>
+        </dependency>
 
 
     </dependencies>

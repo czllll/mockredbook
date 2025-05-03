@@ -84,4 +84,13 @@ public interface NoteService {
      * @return
      */
     Response<?> unCollectNote(UnCollectNoteReqVO unCollectNoteReqVO);
+
+    /**
+     * 获取是否点赞、收藏数据
+     * @param findNoteIsLikedAndCollectedReqVO
+     * @return
+     */
+    Response<FindNoteIsLikedAndCollectedRspVO> isLikedAndCollectedData(FindNoteIsLikedAndCollectedReqVO findNoteIsLikedAndCollectedReqVO);
+
+
 }

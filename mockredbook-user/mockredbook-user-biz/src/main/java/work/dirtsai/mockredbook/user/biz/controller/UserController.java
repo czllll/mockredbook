@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog;
 import work.dirtsai.framework.common.response.Response;
+import work.dirtsai.mockredbook.user.biz.model.vo.FindUserProfileReqVO;
+import work.dirtsai.mockredbook.user.biz.model.vo.FindUserProfileRspVO;
 import work.dirtsai.mockredbook.user.biz.model.vo.UpdateUserInfoReqVO;
 import work.dirtsai.mockredbook.user.biz.service.UserService;
 import work.dirtsai.mockredbook.user.dto.req.*;
@@ -36,6 +38,16 @@ public class UserController {
     @PostMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Response<?> updateUserInfo(@Validated UpdateUserInfoReqVO updateUserInfoReqVO) {
         return userService.updateUserInfo(updateUserInfoReqVO);
+    }
+
+    /**
+     * 获取用户主页信息
+     *
+     * @return
+     */
+    @PostMapping(value = "/profile")
+    public Response<FindUserProfileRspVO> findUserProfile(@Validated @RequestBody FindUserProfileReqVO findUserProfileReqVO) {
+        return userService.findUserProfile(findUserProfileReqVO);
     }
 
     // ===================================== 对其他服务提供的接口 =====================================

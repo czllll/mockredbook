@@ -100,6 +100,18 @@
             <artifactId>buffer-trigger</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>mockredbook-count-api</artifactId>
+        </dependency>
+
+
+        <!-- 快手 Buffer Trigger -->
+        <dependency>
+            <groupId>com.github.phantomthief</groupId>
+            <artifactId>buffer-trigger</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

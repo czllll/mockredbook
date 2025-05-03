@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * 登录上下文
+ * 本地线程上下文工具类
  */
 public class LoginUserContextHolder {
 

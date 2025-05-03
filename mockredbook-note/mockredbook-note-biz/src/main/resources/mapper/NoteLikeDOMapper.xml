@@ -121,6 +121,17 @@
     where user_id = #{userId} and note_id = #{noteId} and status = 1
   </update>
 
+  <select id="selectTotalCountByUserId" resultType="int">
+    select count(*) from t_note_like
+    where user_id = #{userId} and status = 1
+  </select>
+
+  <select id="selectPageListByUserId" resultType="long">
+    select note_id from t_note_like
+    where user_id = #{userId} and status = 1
+    order by create_time desc
+    limit #{offset}, #{pageSize}
+  </select>
 
 
 </mapper>

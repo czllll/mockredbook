@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * @author: 犬小哈
+ * @author: czl
  * @date: 2024/8/9 11:52
  * @version: v1.0.0
  * @description: 笔记收藏、取消收藏 MQ 消费者

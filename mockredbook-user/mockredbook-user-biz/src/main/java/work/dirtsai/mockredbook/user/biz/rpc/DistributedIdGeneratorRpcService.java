@@ -17,7 +17,7 @@ public class DistributedIdGeneratorRpcService {
 
 
     /**
-     * Leaf 号段模式：小哈书 ID 业务标识
+     * Leaf 号段模式：XNote ID 业务标识
      */
     private static final String BIZ_TAG_XIAOHASHU_ID = "leaf-segment-xiaohashu-id";
 

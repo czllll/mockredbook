@@ -12,6 +12,8 @@
 
 
     <modules>
+        <module>mockredbook-kv-api</module>
+        <module>mockredbook-kv-biz</module>
     </modules>
 
     <!-- 项目名称 -->

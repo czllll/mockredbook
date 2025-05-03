@@ -14,7 +14,7 @@ import work.dirtsai.framework.biz.context.holder.LoginUserContextHolder;
 import java.io.IOException;
 
 /**
- * @description: 提取请求头中的用户 ID 保存到上下文中，以方便后续使用
+ * @description: 提取请求头中的用户 ID 保存到ThreadLocal中，以方便后续使用
  **/
 @Slf4j
 public class HeaderUserId2ContextFilter extends OncePerRequestFilter {

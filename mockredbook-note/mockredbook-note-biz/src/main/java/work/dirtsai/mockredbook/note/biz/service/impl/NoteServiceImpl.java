@@ -8,6 +8,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.base.Preconditions;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -31,13 +32,8 @@ import work.dirtsai.framework.common.util.DateUtils;
 import work.dirtsai.framework.common.util.JsonUtils;
 import work.dirtsai.mockredbook.note.biz.constant.MQConstants;
 import work.dirtsai.mockredbook.note.biz.constant.RedisKeyConstants;
-import work.dirtsai.mockredbook.note.biz.domain.dataobject.NoteCollectionDO;
-import work.dirtsai.mockredbook.note.biz.domain.dataobject.NoteDO;
-import work.dirtsai.mockredbook.note.biz.domain.dataobject.NoteLikeDO;
-import work.dirtsai.mockredbook.note.biz.domain.mapper.NoteCollectionDOMapper;
-import work.dirtsai.mockredbook.note.biz.domain.mapper.NoteDOMapper;
-import work.dirtsai.mockredbook.note.biz.domain.mapper.NoteLikeDOMapper;
-import work.dirtsai.mockredbook.note.biz.domain.mapper.TopicDOMapper;
+import work.dirtsai.mockredbook.note.biz.domain.dataobject.*;
+import work.dirtsai.mockredbook.note.biz.domain.mapper.*;
 import work.dirtsai.mockredbook.note.biz.enums.*;
 import work.dirtsai.mockredbook.note.biz.model.dto.CollectUnCollectNoteMqDTO;
 import work.dirtsai.mockredbook.note.biz.model.dto.LikeUnlikeNoteMqDTO;
@@ -50,13 +46,11 @@ import work.dirtsai.mockredbook.note.biz.service.NoteService;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByIdRespDTO;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @description: 笔记业务
@@ -86,7 +80,8 @@ public class NoteServiceImpl implements NoteService {
 
     @Resource
     private NoteLikeDOMapper noteLikeDOMapper;
-
+    @Resource
+    private ChannelDOMapper channelDOMapper;
 
 
 
@@ -142,6 +137,14 @@ public class NoteServiceImpl implements NoteService {
                 break;
         }
 
+        // 判断所选频道是否存在
+        Long channelId = publishNoteReqVO.getChannelId();
+        ChannelDO channelDO = channelDOMapper.selectByPrimaryKey(channelId);
+
+        if (Objects.isNull(channelDO)) {
+            throw new BizException(ResponseCodeEnum.CHANNEL_NOT_FOUND);
+        }
+
         // RPC: 调用分布式 ID 生成服务，生成笔记 ID
         String snowflakeIdId = distributedIdGeneratorRpcService.getSnowflakeId();
         // 笔记内容 UUID
@@ -165,16 +168,11 @@ public class NoteServiceImpl implements NoteService {
             }
         }
 
-        // 话题
-        Long topicId = publishNoteReqVO.getTopicId();
-        String topicName = null;
-        if (Objects.nonNull(topicId)) {
-            // 获取话题名称
-            topicName = topicDOMapper.selectNameByPrimaryKey(topicId);
-        }
-
         // 发布者用户 ID
         Long creatorId = LoginUserContextHolder.getUserId();
+
+        // 话题处理
+        String topicIds = handleTopics(publishNoteReqVO.getTopics());
 
         // 构建笔记 DO 对象
         NoteDO noteDO = NoteDO.builder()
@@ -183,8 +181,10 @@ public class NoteServiceImpl implements NoteService {
                 .creatorId(creatorId)
                 .imgUris(imgUris)
                 .title(publishNoteReqVO.getTitle())
-                .topicId(publishNoteReqVO.getTopicId())
-                .topicName(topicName)
+//                .topicId(publishNoteReqVO.getTopicId())
+//                .topicName(topicName)
+                .channelId(publishNoteReqVO.getChannelId())
+                .topicIds(topicIds)
                 .type(type)
                 .visible(NoteVisibleEnum.PUBLIC.getCode())
                 .createTime(LocalDateTime.now())
@@ -1390,6 +1390,255 @@ public class NoteServiceImpl implements NoteService {
             }
         });
         return Response.success();
+    }
+
+
+    /**
+     * 获取是否点赞、收藏数据
+     *
+     * @param findNoteIsLikedAndCollectedReqVO
+     * @return
+     */
+    @Override
+    public Response<FindNoteIsLikedAndCollectedRspVO> isLikedAndCollectedData(FindNoteIsLikedAndCollectedReqVO findNoteIsLikedAndCollectedReqVO) {
+        Long noteId = findNoteIsLikedAndCollectedReqVO.getNoteId();
+
+        // 已登录的用户 ID
+        Long currUserId = LoginUserContextHolder.getUserId();
+
+        // 默认未点赞、未收藏
+        boolean isLiked = false;
+        boolean isCollected = false;
+
+        // 若当前用户已登录
+        if (Objects.nonNull((currUserId))) {
+            // 1. 校验是否点赞
+            isLiked = checkNoteIsLiked(noteId, currUserId);
+
+            // 2. 校验是否收藏
+            isCollected = checkNoteIsCollected(noteId, currUserId);
+        }
+
+        return Response.success(FindNoteIsLikedAndCollectedRspVO.builder()
+                .noteId(noteId)
+                .isLiked(isLiked)
+                .isCollected(isCollected)
+                .build());
+    }
+
+    /**
+     * 校验当前用户是否点赞笔记
+     * @param noteId
+     * @param currUserId
+     * @return
+     */
+    private boolean checkNoteIsLiked(Long noteId, Long currUserId) {
+        // 是否点赞
+        boolean isLiked = false;
+
+        // Roaring Bitmap Key
+        String rbitmapUserNoteLikeListKey = RedisKeyConstants.buildRBitmapUserNoteLikeListKey(currUserId);
+
+        DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+        // Lua 脚本路径
+        script.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/rbitmap_note_like_only_check.lua")));
+        // 返回值类型
+        script.setResultType(Long.class);
+
+        // 执行 Lua 脚本，拿到返回结果
+        Long result = redisTemplate.execute(script, Collections.singletonList(rbitmapUserNoteLikeListKey), noteId);
+
+        NoteLikeLuaResultEnum noteLikeLuaResultEnum = NoteLikeLuaResultEnum.valueOf(result);
+
+        switch (noteLikeLuaResultEnum) {
+            // Redis 中 Roaring Bitmap 不存在
+            case NOT_EXIST -> {
+                // 从数据库中校验笔记是否被点赞，并异步初始化 Roaring Bitmap，设置过期时间
+                int count = noteLikeDOMapper.selectCountByUserIdAndNoteId(currUserId, noteId);
+
+                // 保底1天+随机秒数
+                long expireSeconds = 60*60*24 + RandomUtil.randomInt(60*60*24);
+
+                // 目标笔记已经被点赞
+                if (count > 0) {
+                    // 异步初始化 Roaring Bitmap
+                    threadPoolTaskExecutor.submit(() ->
+                            batchAddNoteLike2RBitmapAndExpire(currUserId, expireSeconds, rbitmapUserNoteLikeListKey));
+                    isLiked = true;
+                }
+            }
+            case NOTE_LIKED -> isLiked = true; // Roaring Bitmap 判断已点赞
+        }
+
+        return isLiked;
+    }
+
+    /**
+     * 校验当前用户是否收藏笔记
+     * @param noteId
+     * @param currUserId
+     * @return
+     */
+    private boolean checkNoteIsCollected(Long noteId, Long currUserId) {
+        // 是否收藏
+        boolean isCollected = false;
+
+        // Roaring Bitmap Key
+        String rbitmapUserNoteCollectListKey = RedisKeyConstants.buildRBitmapUserNoteCollectListKey(currUserId);
+
+        DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+        // Lua 脚本路径
+        script.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/rbitmap_note_collect_only_check.lua")));
+        // 返回值类型
+        script.setResultType(Long.class);
+
+        // 执行 Lua 脚本，拿到返回结果
+        Long result = redisTemplate.execute(script, Collections.singletonList(rbitmapUserNoteCollectListKey), noteId);
+
+        NoteCollectLuaResultEnum noteCollectLuaResultEnum = NoteCollectLuaResultEnum.valueOf(result);
+
+        switch (noteCollectLuaResultEnum) {
+            // Redis 中 Roaring Bitmap 不存在
+            case NOT_EXIST -> {
+                // 从数据库中校验笔记是否被收藏，并异步初始化布隆过滤器，设置过期时间
+                int count = noteCollectionDOMapper.selectCountByUserIdAndNoteId(currUserId, noteId);
+
+                // 保底1天+随机秒数
+                long expireSeconds = 60*60*24 + RandomUtil.randomInt(60*60*24);
+
+                // 目标笔记已经被收藏
+                if (count > 0) {
+                    // 异步初始化布隆过滤器
+                    threadPoolTaskExecutor.submit(() ->
+                            batchAddNoteCollect2RBitmapAndExpire(currUserId, expireSeconds, rbitmapUserNoteCollectListKey));
+                    isCollected = true;
+                }
+            }
+            // 目标笔记已经被收藏
+            case NOTE_COLLECTED -> isCollected = true;
+        }
+
+        return isCollected;
+    }
+
+
+    /**
+     * 初始化笔记收藏布隆过滤器
+     * @param userId
+     * @param expireSeconds
+     * @param rbitmapUserNoteCollectListKey
+     */
+    private void batchAddNoteCollect2RBitmapAndExpire(Long userId, long expireSeconds, String rbitmapUserNoteCollectListKey) {
+        try {
+            // 异步全量同步一下，并设置过期时间
+            List<NoteCollectionDO> noteCollectionDOS = noteCollectionDOMapper.selectByUserId(userId);
+
+            if (CollUtil.isNotEmpty(noteCollectionDOS)) {
+                DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+                // Lua 脚本路径
+                script.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/rbitmap_batch_add_note_collect_and_expire.lua")));
+                // 返回值类型
+                script.setResultType(Long.class);
+
+                // 构建 Lua 参数
+                List<Object> luaArgs = Lists.newArrayList();
+                noteCollectionDOS.forEach(noteCollectionDO -> luaArgs.add(noteCollectionDO.getNoteId())); // 将每个收藏的笔记 ID 传入
+                luaArgs.add(expireSeconds);  // 最后一个参数是过期时间（秒）
+                redisTemplate.execute(script, Collections.singletonList(rbitmapUserNoteCollectListKey), luaArgs.toArray());
+            }
+        } catch (Exception e) {
+            log.error("## 异步初始化【笔记收藏】Roaring Bitmap 异常: ", e);
+        }
+    }
+
+
+    /**
+     * 初始化笔记点赞 Roaring Bitmap
+     * @param userId
+     * @param expireSeconds
+     * @param rbitmapUserNoteLikeListKey
+     */
+    private void batchAddNoteLike2RBitmapAndExpire(Long userId, long expireSeconds, String rbitmapUserNoteLikeListKey) {
+        try {
+            // 异步全量同步一下，并设置过期时间
+            List<NoteLikeDO> noteLikeDOS = noteLikeDOMapper.selectByUserId(userId);
+
+            if (CollUtil.isNotEmpty(noteLikeDOS)) {
+                DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+                // Lua 脚本路径
+                script.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/rbitmap_batch_add_note_like_and_expire.lua")));
+                // 返回值类型
+                script.setResultType(Long.class);
+
+                // 构建 Lua 参数
+                List<Object> luaArgs = Lists.newArrayList();
+                noteLikeDOS.forEach(noteLikeDO -> luaArgs.add(noteLikeDO.getNoteId())); // 将每个点赞的笔记 ID 传入
+                luaArgs.add(expireSeconds);  // 最后一个参数是过期时间（秒）
+                redisTemplate.execute(script, Collections.singletonList(rbitmapUserNoteLikeListKey), luaArgs.toArray());
+            }
+        } catch (Exception e) {
+            log.error("## 异步初始化【笔记点赞】Roaring Bitmap 异常: ", e);
+        }
+    }
+
+    /**
+     * 处理话题
+     * @param topicInputs
+     * @return
+     */
+    private String handleTopics(List<Object> topicInputs) {
+        if (CollUtil.isEmpty(topicInputs)) return null;
+
+        // 1. 分离已存在话题（ID）和新话题（名称）
+        List<Long> existingTopicIds = Lists.newArrayList();
+        List<String> newTopicNames = Lists.newArrayList();
+
+        topicInputs.forEach(input -> {
+            if (input instanceof Number) {
+                // 已存在话题 ID
+                existingTopicIds.add(Long.valueOf(String.valueOf(input)));
+            } else if (input instanceof String) {
+                // 新话题名称
+                newTopicNames.add((String) input);
+            }
+        });
+
+        // 2. 查询现有话题信息 - 批量查询
+        Set<Long> existingTopicIdsSet = Sets.newHashSet();
+        if (CollUtil.isNotEmpty(existingTopicIds)) {
+            List<TopicDO> existingTopicDOS = topicDOMapper.selectByTopicIdIn(existingTopicIds);
+            existingTopicIdsSet = existingTopicDOS.stream()
+                    .map(TopicDO::getId)
+                    .collect(Collectors.toSet());
+        }
+
+
+        // 3. 处理新标签
+        List<TopicDO> newTopics = Lists.newArrayList();
+        for (String topicName : newTopicNames) {
+            TopicDO existingTopic = topicDOMapper.selectByTopicName(topicName);
+            if (Objects.isNull(existingTopic)) {
+                // 话题不存在，插入新话题
+                newTopics.add(TopicDO.builder().name(topicName).build());
+            } else {
+                // 话题已经存在，加入现有话题 ID 列表
+                existingTopicIdsSet.add(existingTopic.getId());
+            }
+        }
+
+        // 4. 批量保存新话题（如果有）
+        if (CollUtil.isNotEmpty(newTopics)) {
+            topicDOMapper.batchInsert(newTopics);
+        }
+
+        // 5. 获取所有话题的 ID（已存在和新插入的）
+        List<Long> allTopicIds = new ArrayList<>(existingTopicIdsSet);
+        if (CollUtil.isNotEmpty(newTopics)) {
+            newTopics.forEach(newTopic -> allTopicIds.add(newTopic.getId()));
+        }
+
+        // 6. 将所有的话题 ID 以逗号拼接
+        return StringUtils.join(allTopicIds, ",");
     }
 
 }

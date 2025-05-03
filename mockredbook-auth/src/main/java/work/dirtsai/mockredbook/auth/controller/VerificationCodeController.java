@@ -20,7 +20,7 @@ public class VerificationCodeController {
 
     @PostMapping("/verification/code/send")
     @ApiOperationLog(description = "发送短信验证码")
-    public Response<?> send (@Validated @RequestBody SendVerificationCodeReqVO sendVerificationCodeReqVO) {
+    public Response<String> send (@Validated @RequestBody SendVerificationCodeReqVO sendVerificationCodeReqVO) {
         return verificationCodeService.send(sendVerificationCodeReqVO);
     }
 }

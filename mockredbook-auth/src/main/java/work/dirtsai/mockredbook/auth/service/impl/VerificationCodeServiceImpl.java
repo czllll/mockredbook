@@ -30,7 +30,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
     private AliyunSmsHelper aliyunSmsHelper;
 
     @Override
-    public Response<?> send(SendVerificationCodeReqVO sendVerificationCodeReqVO) {
+    public Response<String> send(SendVerificationCodeReqVO sendVerificationCodeReqVO) {
         String phoneNumber = sendVerificationCodeReqVO.getPhone();
 
         // 构建验证码 redis key
@@ -56,7 +56,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
         // 发送后存到redis，三分钟过期
         redisTemplate.opsForValue().set(key, verificationCode, 3, TimeUnit.MINUTES);
 
-        return Response.success();
+        return Response.success(verificationCode);
 
     }
 }

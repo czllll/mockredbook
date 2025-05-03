@@ -1,6 +1,8 @@
 package work.dirtsai.mockredbook.user.biz.service;
 
 import work.dirtsai.framework.common.response.Response;
+import work.dirtsai.mockredbook.user.biz.model.vo.FindUserProfileReqVO;
+import work.dirtsai.mockredbook.user.biz.model.vo.FindUserProfileRspVO;
 import work.dirtsai.mockredbook.user.biz.model.vo.UpdateUserInfoReqVO;
 import work.dirtsai.mockredbook.user.dto.req.*;
 import work.dirtsai.mockredbook.user.dto.resp.FindUserByIdRespDTO;
@@ -59,4 +61,11 @@ public interface UserService {
      * @return
      */
     Response<List<FindUserByIdRspDTO>> findByIds(FindUsersByIdsReqDTO findUsersByIdsReqDTO);
+
+    /**
+     * 获取用户主页信息
+     *
+     * @return
+     */
+    Response<FindUserProfileRspVO> findUserProfile(FindUserProfileReqVO findUserProfileReqVO);
 }

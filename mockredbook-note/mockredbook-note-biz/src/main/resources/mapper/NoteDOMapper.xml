@@ -37,12 +37,12 @@
       creator_id, topic_id, topic_name, 
       is_top, `type`, img_uris, video_uri, 
       visible, create_time, update_time, 
-      `status`, content_uuid)
+      `status`, content_uuid, channel_id, topic_ids)
     values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{isContentEmpty,jdbcType=BIT}, 
       #{creatorId,jdbcType=BIGINT}, #{topicId,jdbcType=BIGINT}, #{topicName,jdbcType=VARCHAR}, 
       #{isTop,jdbcType=BIT}, #{type,jdbcType=TINYINT}, #{imgUris,jdbcType=VARCHAR}, #{videoUri,jdbcType=VARCHAR}, 
       #{visible,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=TINYINT}, #{contentUuid,jdbcType=VARCHAR})
+      #{status,jdbcType=TINYINT}, #{contentUuid,jdbcType=VARCHAR},#{channelId}, #{topicIds})
   </insert>
   <insert id="insertSelective" parameterType="work.dirtsai.mockredbook.note.biz.domain.dataobject.NoteDO">
     insert into t_note
@@ -223,6 +223,48 @@
     select creator_id from t_note where id = #{noteId} and status = 1
   </select>
 
+  <select id="selectCountByChannelId" resultType="int">
+    select count(*) from t_note where visible = 0 and status = 1
+    <if test="channelId != null and channelId != 0">
+      and channel_id = #{channelId}
+    </if>
+    order by create_time desc
+  </select>
 
+  <select id="selectPageList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_note where visible = 0 and status = 1
+    <if test="channelId != null and channelId != 0">
+      and channel_id = #{channelId}
+    </if>
+    order by create_time desc
+    limit #{offset}, #{pageSize}
+  </select>
+
+  <select id="selectTotalCountByCreatorId" resultType="int">
+    select count(*) from t_note
+    where visible = 0 and status = 1 and creator_id = #{creatorId}
+    order by create_time desc
+  </select>
+
+  <select id="selectPageListByCreatorId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_note where visible = 0 and status = 1
+    and creator_id = #{creatorId}
+    order by create_time desc
+    limit #{offset}, #{pageSize}
+  </select>
+
+  <select id="selectByNoteIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_note
+    where id in
+    <foreach collection="noteIds" item="noteId" open="(" separator="," close=")">
+      #{noteId}
+    </foreach>
+  </select>
 
 </mapper>

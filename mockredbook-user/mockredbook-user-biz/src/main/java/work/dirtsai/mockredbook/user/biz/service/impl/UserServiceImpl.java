@@ -19,21 +19,29 @@ import work.dirtsai.framework.common.enums.DeletedEnum;
 import work.dirtsai.framework.common.enums.StatusEnum;
 import work.dirtsai.framework.common.exception.BizException;
 import work.dirtsai.framework.common.response.Response;
+import work.dirtsai.framework.common.util.DateUtils;
 import work.dirtsai.framework.common.util.JsonUtils;
+import work.dirtsai.framework.common.util.NumberUtils;
 import work.dirtsai.framework.common.util.ParamUtils;
 import work.dirtsai.framework.biz.context.holder.LoginUserContextHolder;
+import work.dirtsai.mockredbook.count.dto.FindUserCountByIdRspDTO;
 import work.dirtsai.mockredbook.oss.api.FileFeignApi;
 import work.dirtsai.mockredbook.user.biz.constant.RedisKeyConstants;
 import work.dirtsai.mockredbook.user.biz.constant.RoleConstants;
 import work.dirtsai.mockredbook.user.biz.domain.dataobject.RoleDO;
+import work.dirtsai.mockredbook.user.biz.domain.dataobject.UserCountDO;
 import work.dirtsai.mockredbook.user.biz.domain.dataobject.UserDO;
 import work.dirtsai.mockredbook.user.biz.domain.dataobject.UserRoleDO;
 import work.dirtsai.mockredbook.user.biz.domain.mapper.RoleDOMapper;
+import work.dirtsai.mockredbook.user.biz.domain.mapper.UserCountDOMapper;
 import work.dirtsai.mockredbook.user.biz.domain.mapper.UserDOMapper;
 import work.dirtsai.mockredbook.user.biz.domain.mapper.UserRoleDOMapper;
 import work.dirtsai.mockredbook.user.biz.enums.ResponseCodeEnum;
 import work.dirtsai.mockredbook.user.biz.enums.SexEnum;
+import work.dirtsai.mockredbook.user.biz.model.vo.FindUserProfileReqVO;
+import work.dirtsai.mockredbook.user.biz.model.vo.FindUserProfileRspVO;
 import work.dirtsai.mockredbook.user.biz.model.vo.UpdateUserInfoReqVO;
+import work.dirtsai.mockredbook.user.biz.rpc.CountRpcService;
 import work.dirtsai.mockredbook.user.biz.rpc.DistributedIdGeneratorRpcService;
 import work.dirtsai.mockredbook.user.biz.rpc.OssRpcService;
 import work.dirtsai.mockredbook.user.biz.service.UserService;
@@ -79,6 +87,11 @@ public class UserServiceImpl implements UserService {
     @Resource(name = "taskExecutor")
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
+    @Resource
+    private CountRpcService countRpcService;
+
+    @Resource
+    private UserCountDOMapper userCountDOMapper;
 
     /**
      * 用户信息本地缓存
@@ -128,11 +141,11 @@ public class UserServiceImpl implements UserService {
             needUpdate = true;
         }
 
-        // 小哈书号
-        String xiaohashuId = updateUserInfoReqVO.getXiaohashuId();
-        if (StringUtils.isNotBlank(xiaohashuId)) {
-            Preconditions.checkArgument(ParamUtils.checkXiaohashuId(xiaohashuId), ResponseCodeEnum.XIAOHASHU_ID_VALID_FAIL.getErrorMessage());
-            userDO.setXiaohashuId(xiaohashuId);
+        // id号
+        String xNoteId = updateUserInfoReqVO.getXiaohashuId();
+        if (StringUtils.isNotBlank(xNoteId)) {
+            Preconditions.checkArgument(ParamUtils.checkXiaohashuId(xNoteId), ResponseCodeEnum.XIAOHASHU_ID_VALID_FAIL.getErrorMessage());
+            userDO.setXiaohashuId(xNoteId);
             needUpdate = true;
         }
 
@@ -245,6 +258,11 @@ public class UserServiceImpl implements UserService {
 
         String userRolesKey = RedisKeyConstants.buildUserRoleKey(userId);
         redisTemplate.opsForValue().set(userRolesKey, JsonUtils.toJsonString(roles));
+
+        // 初始化用户计数记录
+        userCountDOMapper.insert(UserCountDO.builder()
+                .userId(userId)
+                .build());
 
         return Response.success(userId);
     }
@@ -477,5 +495,57 @@ public class UserServiceImpl implements UserService {
         }
 
         return Response.success(findUserByIdRspDTOS);
+    }
+
+    /**
+     * 获取用户主页信息
+     *
+     * @return
+     */
+    @Override
+    public Response<FindUserProfileRspVO> findUserProfile(FindUserProfileReqVO findUserProfileReqVO) {
+        Long userId = findUserProfileReqVO.getUserId();
+
+        if (Objects.isNull(userId)) {
+            userId = LoginUserContextHolder.getUserId();
+        }
+
+        // TODO: 二级缓存待开发
+
+        UserDO userDO = userDOMapper.selectByPrimaryKey(userId);
+
+        if (Objects.isNull(userDO)) {
+            throw new BizException(ResponseCodeEnum.USER_NOT_FOUND);
+        }
+
+        FindUserProfileRspVO findUserProfileRspVO = FindUserProfileRspVO.builder()
+                .userId(userDO.getId())
+                .avatar(userDO.getAvatar())
+                .nickname(userDO.getNickname())
+                .xiaohashuId(userDO.getXiaohashuId())
+                .sex(userDO.getSex())
+                .introduction(userDO.getIntroduction())
+                .build();
+
+        LocalDate birthday = userDO.getBirthday();
+        if (Objects.nonNull(birthday)) {
+            findUserProfileRspVO.setAge(DateUtils.calculateAge(birthday));
+            findUserProfileRspVO.setBirthday(birthday);
+        }
+
+        // 关注数、粉丝数、收藏与点赞总数
+        FindUserCountByIdRspDTO findUserCountByIdRspDTO = countRpcService.findUserCountById(userId);
+        if (Objects.nonNull(findUserCountByIdRspDTO)) {
+            Long fansTotal = findUserCountByIdRspDTO.getFansTotal();
+            Long followingTotal = findUserCountByIdRspDTO.getFollowingTotal();
+            Long likeTotal = findUserCountByIdRspDTO.getLikeTotal();
+            Long collectTotal = findUserCountByIdRspDTO.getCollectTotal();
+
+            findUserProfileRspVO.setFansTotal(NumberUtils.formatNumberString(fansTotal));
+            findUserProfileRspVO.setFollowingTotal(NumberUtils.formatNumberString(followingTotal));
+            findUserProfileRspVO.setLikeAndCollectTotal(NumberUtils.formatNumberString(likeTotal + collectTotal));
+        }
+
+        return Response.success(findUserProfileRspVO);
     }
 }

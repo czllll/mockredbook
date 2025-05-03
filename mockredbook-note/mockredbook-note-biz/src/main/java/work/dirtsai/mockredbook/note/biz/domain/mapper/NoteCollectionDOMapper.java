@@ -64,4 +64,10 @@ public interface NoteCollectionDOMapper {
      * @return
      */
     int update2UnCollectByUserIdAndNoteId(NoteCollectionDO noteCollectionDO);
+
+    int selectTotalCountByUserId(@Param("userId") Long userId);
+
+    List<Long> selectPageListByUserId(@Param("userId") Long userId,
+                                      @Param("offset") long offset,
+                                      @Param("pageSize") long pageSize);
 }

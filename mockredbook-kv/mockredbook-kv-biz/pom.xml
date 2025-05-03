@@ -40,6 +40,11 @@
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>mockredbook-spring-boot-starter-biz-operationlog</artifactId>
+        </dependency>
+
         <!-- 服务发现 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
