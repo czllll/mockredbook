@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>work.dirtsai</groupId>
+        <artifactId>algocove</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>algocove-oss</artifactId>
+    <packaging>pom</packaging>
+
+    <name>algocove-oss</name>
+    <url>http://maven.apache.org</url>
+    <modules>
+        <module>algocove-oss-api</module>
+        <module>algocove-oss-biz</module>
+    </modules>
+    <description>对象存储服务</description>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>algocove-spring-boot-starter-jackson</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>algocove-spring-boot-starter-biz-operationlog</artifactId>
+        </dependency>
+    </dependencies>
+</project>

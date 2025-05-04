@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>work.dirtsai</groupId>
+        <artifactId>algocove</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>algocove-framework</artifactId>
+    <packaging>pom</packaging>
+
+    <name>algocove-framework</name>
+    <description>平台基础设置层：封装常用功能</description>
+    <modules>
+        <module>algocove-common</module>
+        <!--接口日志组件        -->
+        <module>algocove-spring-boot-starter-biz-operationlog</module>
+        <module>algocove-spring-boot-starter-jackson</module>
+        <module>algocove-spring-boot-starter-biz-context</module>
+    </modules>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

@@ -5,33 +5,33 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>work.dirtsai</groupId>
-  <artifactId>mockredbook</artifactId>
+  <artifactId>algocove</artifactId>
   <version>${revision}</version>
 
   <!-- 项目名称 -->
   <name>${project.artifactId}</name>
   <!-- 项目描述 -->
-  <description>小哈书（仿小红书），基于 Spring Cloud Alibaba 微服务架构</description>
+  <description>算法组队平台</description>
 
   <!-- 多模块项目需要配置打包方式为 pom -->
   <packaging>pom</packaging>
 
   <!-- 子模块管理 -->
   <modules>
-    <module>mockredbook-auth</module>
-    <module>mockredbook-framework</module>
-    <module>mockredbook-gateway</module>
-    <module>mockredbook-oss</module>
-    <module>mockredbook-user</module>
-    <module>mockredbook-kv</module>
-    <module>mockredbook-distributed-id-generator</module>
-    <module>mockredbook-note</module>
-    <module>mockredbook-note/mockredbook-note-biz</module>
-    <module>mockredbook-user-relation</module>
-    <module>mockredbook-count</module>
-    <module>mockredbook-data-align</module>
-    <module>mockredbook-search</module>
-    <module>mockredbook-comment</module>
+    <module>algocove-auth</module>
+    <module>algocove-framework</module>
+    <module>algocove-gateway</module>
+    <module>algocove-oss</module>
+    <module>algocove-user</module>
+    <module>algocove-kv</module>
+    <module>algocove-distributed-id-generator</module>
+    <module>algocove-note</module>
+    <module>algocove-note/algocove-note-biz</module>
+    <module>algocove-user-relation</module>
+    <module>algocove-count</module>
+    <module>algocove-data-align</module>
+    <module>algocove-search</module>
+    <module>algocove-comment</module>
   </modules>
 
   <properties>
@@ -89,26 +89,26 @@
 
       <dependency>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-common</artifactId>
+        <artifactId>algocove-common</artifactId>
         <version>${revision}</version>
       </dependency>
 
       <!-- 业务接口日志组件 -->
       <dependency>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-spring-boot-starter-biz-operationlog</artifactId>
+        <artifactId>algocove-spring-boot-starter-biz-operationlog</artifactId>
         <version>${revision}</version>
       </dependency>
 
       <dependency>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-spring-boot-starter-jackson</artifactId>
+        <artifactId>algocove-spring-boot-starter-jackson</artifactId>
         <version>${revision}</version>
       </dependency>
 
       <dependency>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-spring-boot-starter-biz-context</artifactId>
+        <artifactId>algocove-spring-boot-starter-biz-context</artifactId>
         <version>${revision}</version>
       </dependency>
 
@@ -270,8 +270,8 @@
       </dependency>
 
       <dependency>
-        <groupId>work.dirtsai.mockredbook.oss</groupId>
-        <artifactId>mockredbook-oss-api</artifactId>
+        <groupId>work.dirtsai.algocove.oss</groupId>
+        <artifactId>algocove-oss-api</artifactId>
         <version>${revision}</version>
       </dependency>
 
@@ -285,25 +285,25 @@
 
       <dependency>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-user-api</artifactId>
+        <artifactId>algocove-user-api</artifactId>
         <version>${revision}</version>
       </dependency>
 
       <dependency>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-kv-api</artifactId>
+        <artifactId>algocove-kv-api</artifactId>
         <version>${revision}</version>
       </dependency>
 
       <dependency>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-distributed-id-generator-api</artifactId>
+        <artifactId>algocove-distributed-id-generator-api</artifactId>
         <version>${revision}</version>
       </dependency>
 
       <dependency>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-count-api</artifactId>
+        <artifactId>algocove-count-api</artifactId>
         <version>${revision}</version>
       </dependency>
 

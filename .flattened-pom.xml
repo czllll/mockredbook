@@ -3,20 +3,20 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>work.dirtsai</groupId>
-  <artifactId>mockredbook</artifactId>
+  <artifactId>algocove</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>小哈书（仿小红书），基于 Spring Cloud Alibaba 微服务架构</description>
   <modules>
-    <module>mockredbook-auth</module>
-    <module>mockredbook-framework</module>
-    <module>mockredbook-gateway</module>
-    <module>mockredbook-oss</module>
-    <module>mockredbook-user</module>
-    <module>mockredbook-kv</module>
-    <module>mockredbook-kv/mockredbook-kv-api</module>
-    <module>mockredbook-kv/mockredbook-kv-biz</module>
+    <module>algocove-auth</module>
+    <module>algocove-framework</module>
+    <module>algocove-gateway</module>
+    <module>algocove-oss</module>
+    <module>algocove-user</module>
+    <module>algocove-kv</module>
+    <module>algocove-kv/algocove-kv-api</module>
+    <module>algocove-kv/algocove-kv-biz</module>
   </modules>
   <properties>
     <minio.version>8.2.1</minio.version>
@@ -52,22 +52,22 @@
     <dependencies>
       <dependency>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-common</artifactId>
+        <artifactId>algocove-common</artifactId>
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-spring-boot-starter-biz-operationlog</artifactId>
+        <artifactId>algocove-spring-boot-starter-biz-operationlog</artifactId>
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-spring-boot-starter-jackson</artifactId>
+        <artifactId>algocove-spring-boot-starter-jackson</artifactId>
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
-        <groupId>work.dirtsai.mockredbook.framework</groupId>
-        <artifactId>mockredbook-spring-boot-starter-biz-context</artifactId>
+        <groupId>work.dirtsai.algocove.framework</groupId>
+        <artifactId>algocove-spring-boot-starter-biz-context</artifactId>
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
@@ -192,8 +192,8 @@
         <version>${jaxb-runtime.version}</version>
       </dependency>
       <dependency>
-        <groupId>work.dirtsai.mockredbook.oss</groupId>
-        <artifactId>mockredbook-oss-api</artifactId>
+        <groupId>work.dirtsai.algocove.oss</groupId>
+        <artifactId>algocove-oss-api</artifactId>
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
@@ -203,12 +203,12 @@
       </dependency>
       <dependency>
         <groupId>work.dirtsai.mockeredbook.user.api</groupId>
-        <artifactId>mockredbook-user-api</artifactId>
+        <artifactId>algocove-user-api</artifactId>
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>work.dirtsai</groupId>
-        <artifactId>mockredbook-kv-api</artifactId>
+        <artifactId>algocove-kv-api</artifactId>
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
     </dependencies>

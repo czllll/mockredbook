@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>work.dirtsai</groupId>
+        <artifactId>algocove</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <modules>
+        <module>algocove-user-relation-api</module>
+        <module>algocove-user-relation-biz</module>
+    </modules>
+
+    <artifactId>algocove-user-relation</artifactId>
+    <packaging>pom</packaging>
+    <!-- 项目名称 -->
+    <name>${project.artifactId}</name>
+    <!-- 项目描述 -->
+    <description>用户关系服务</description>
+
+</project>

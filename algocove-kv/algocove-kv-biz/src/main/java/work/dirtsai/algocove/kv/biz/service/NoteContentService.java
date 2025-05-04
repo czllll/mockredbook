@@ -1,0 +1,38 @@
+package work.dirtsai.algocove.kv.biz.service;
+
+import work.dirtsai.framework.common.response.Response;
+import work.dirtsai.algocove.kv.dto.req.AddNoteContentReqDTO;
+import work.dirtsai.algocove.kv.dto.req.DeleteNoteContentReqDTO;
+import work.dirtsai.algocove.kv.dto.req.FindNoteContentReqDTO;
+import work.dirtsai.algocove.kv.dto.resp.FindNoteContentRespDTO;
+
+/**
+ * 笔记内容存储
+ */
+public interface NoteContentService {
+
+    /**
+     * 添加笔记内容
+     *
+     * @param addNoteContentReqDTO
+     * @return
+     */
+    Response<?> addNoteContent(AddNoteContentReqDTO addNoteContentReqDTO);
+
+    /**
+     * 查询笔记内容
+     *
+     * @param findNoteContentReqDTO
+     * @return
+     */
+    Response<FindNoteContentRespDTO> findNoteContent(FindNoteContentReqDTO findNoteContentReqDTO);
+
+    /**
+     * 删除笔记内容
+     *
+     * @param deleteNoteContentReqDTO
+     * @return
+     */
+    Response<?> deleteNoteContent(DeleteNoteContentReqDTO deleteNoteContentReqDTO);
+
+}
