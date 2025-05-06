@@ -14,4 +14,6 @@ import work.dirtsai.algocove.count.dto.FindUserCountByIdRspDTO;
 public interface UserCountService {
 
     Response<FindUserCountByIdRspDTO> findUserCountData(FindUserCountByIdReqDTO findUserCountByIdReqDTO);
+
+    Long getFansCountByCreatorId(Long creatorId);
 }

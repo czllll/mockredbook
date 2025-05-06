@@ -71,7 +71,7 @@ public class Comment2DBConsumer {
     @Bean
     public DefaultMQPushConsumer mqPushConsumer() throws MQClientException {
         // Group 组
-        String group = "xiaohashu_group_" + MQConstants.TOPIC_PUBLISH_COMMENT;
+        String group = "mockbook_group_" + MQConstants.TOPIC_PUBLISH_COMMENT;
 
         // 创建一个新的 DefaultMQPushConsumer 实例，并指定消费者的消费组名
         consumer = new DefaultMQPushConsumer(group);

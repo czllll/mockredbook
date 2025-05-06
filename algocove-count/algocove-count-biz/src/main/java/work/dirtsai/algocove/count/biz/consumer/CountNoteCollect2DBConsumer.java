@@ -20,7 +20,7 @@ import java.util.Map;
  * @description: 计数: 笔记收藏数落库
  **/
 @Component
-@RocketMQMessageListener(consumerGroup = "xiaohashu_group_" + MQConstants.TOPIC_COUNT_NOTE_COLLECT_2_DB, // Group 组
+@RocketMQMessageListener(consumerGroup = "mockbook_group_" + MQConstants.TOPIC_COUNT_NOTE_COLLECT_2_DB, // Group 组
         topic = MQConstants.TOPIC_COUNT_NOTE_COLLECT_2_DB // 主题 Topic
 )
 @Slf4j

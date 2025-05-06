@@ -145,4 +145,11 @@
     from t_user_count
     where user_id = #{userId} limit 1
   </select>
+
+  <select id="selectFansCountByUserId" resultType="java.lang.Long" parameterType="java.lang.Long">
+    SELECT fans_total
+    FROM t_user_count
+    WHERE user_id = #{userId}
+  </select>
+
 </mapper>

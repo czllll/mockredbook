@@ -1,8 +1,13 @@
 package work.dirtsai.algocove.user.relation.biz.service;
 
+import org.springframework.web.bind.annotation.RequestParam;
+import work.dirtsai.algocove.user.relation.model.dto.FansPageReqDTO;
+import work.dirtsai.algocove.user.relation.model.dto.FansPageRspDTO;
 import work.dirtsai.framework.common.response.PageResponse;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.algocove.user.relation.biz.model.vo.*;
+
+import java.util.List;
 
 
 public interface RelationService {
@@ -35,4 +40,10 @@ public interface RelationService {
      * @return
      */
     PageResponse<FindFansUserRspVO> findFansList(FindFansListReqVO findFansListReqVO);
+
+    /**
+     * 使用游标查询粉丝列表
+     */
+    Response<FansPageRspDTO> getFansPage(FansPageReqDTO fansPageReqDTO);
+
 }

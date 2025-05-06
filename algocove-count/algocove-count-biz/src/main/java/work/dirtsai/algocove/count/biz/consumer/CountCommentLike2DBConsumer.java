@@ -22,7 +22,7 @@ import java.util.List;
  * @description: 计数: 评论点赞数落库
  **/
 @Component
-@RocketMQMessageListener(consumerGroup = "xiaohashu_group_" + MQConstants.TOPIC_COUNT_COMMENT_LIKE_2_DB, // Group 组
+@RocketMQMessageListener(consumerGroup = "mockbook_group_" + MQConstants.TOPIC_COUNT_COMMENT_LIKE_2_DB, // Group 组
         topic = MQConstants.TOPIC_COUNT_COMMENT_LIKE_2_DB // 主题 Topic
         )
 @Slf4j

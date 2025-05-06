@@ -12,6 +12,7 @@ import com.google.common.collect.Sets;
 import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -25,8 +26,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import work.dirtsai.algocove.note.biz.model.dto.FeedFollowingMqDTO;
+import work.dirtsai.algocove.user.dto.resp.FindUserByIdRspDTO;
 import work.dirtsai.framework.biz.context.holder.LoginUserContextHolder;
 import work.dirtsai.framework.common.exception.BizException;
+import work.dirtsai.framework.common.response.PageResponse;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.framework.common.util.DateUtils;
 import work.dirtsai.framework.common.util.JsonUtils;
@@ -60,6 +64,8 @@ public class NoteServiceImpl implements NoteService {
 
     @Resource
     private NoteDOMapper noteDOMapper;
+    @Resource
+    private NoteCountDOMapper noteCountDOMapper;
     @Resource
     private TopicDOMapper topicDOMapper;
     @Resource
@@ -172,7 +178,7 @@ public class NoteServiceImpl implements NoteService {
 
         // 话题处理
         String topicIds = handleTopics(publishNoteReqVO.getTopics());
-
+        LocalDateTime now = LocalDateTime.now();
         // 构建笔记 DO 对象
         NoteDO noteDO = NoteDO.builder()
                 .id(Long.valueOf(snowflakeIdId))
@@ -186,8 +192,8 @@ public class NoteServiceImpl implements NoteService {
                 .topicIds(topicIds)
                 .type(type)
                 .visible(NoteVisibleEnum.PUBLIC.getCode())
-                .createTime(LocalDateTime.now())
-                .updateTime(LocalDateTime.now())
+                .createTime(now)
+                .updateTime(now)
                 .status(NoteStatusEnum.NORMAL.getCode())
                 .isTop(Boolean.FALSE)
                 .videoUri(videoUri)
@@ -216,14 +222,14 @@ public class NoteServiceImpl implements NoteService {
                 .build();
 
         // 构建消息对象，并将 DTO 转成 Json 字符串设置到消息体中
-        Message<String> message = MessageBuilder.withPayload(JsonUtils.toJsonString(noteOperateMqDTO))
+        Message<String> noteOpMessage = MessageBuilder.withPayload(JsonUtils.toJsonString(noteOperateMqDTO))
                 .build();
 
         // 通过冒号连接, 可让 MQ 发送给主题 Topic 时，携带上标签 Tag
         String destination = MQConstants.TOPIC_NOTE_OPERATE + ":" + MQConstants.TAG_NOTE_PUBLISH;
 
         // 异步发送 MQ 消息，提升接口响应速度
-        rocketMQTemplate.asyncSend(destination, message, new SendCallback() {
+        rocketMQTemplate.asyncSend(destination, noteOpMessage, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("==> 【笔记发布】MQ 发送成功，SendResult: {}", sendResult);
@@ -232,6 +238,29 @@ public class NoteServiceImpl implements NoteService {
             @Override
             public void onException(Throwable throwable) {
                 log.error("==> 【笔记发布】MQ 发送异常: ", throwable);
+            }
+        });
+
+        // 发送Feed流MQ消息
+        // 构建消息体DTO
+        FeedFollowingMqDTO feedFollowingMqDTO = FeedFollowingMqDTO.builder()
+                .creatorId(creatorId)
+                .createTime(now)
+                .noteId(Long.valueOf(snowflakeIdId))
+                .build();
+        // 构建消息
+        Message<String> feedMessage = MessageBuilder.withPayload(JsonUtils.toJsonString(feedFollowingMqDTO))
+                .build();
+        // 异步发送 MQ 消息，提升接口响应速度
+        rocketMQTemplate.asyncSend(MQConstants.TOPIC_NOTE_FEED , feedMessage, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("==> 【笔记发布FEED】MQ 发送成功，SendResult: {}", sendResult);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("==> 【笔记发布FEED】MQ 发送异常: ", throwable);
             }
         });
 
@@ -1639,6 +1668,69 @@ public class NoteServiceImpl implements NoteService {
         // 6. 将所有的话题 ID 以逗号拼接
         return StringUtils.join(allTopicIds, ",");
     }
+
+    @Override
+    public List<FindDiscoverNoteRspVO> getNotesByUserIds(List<Long> noteIdList) {
+        if (CollectionUtils.isEmpty(noteIdList)) {
+            return Collections.emptyList();
+        }
+
+        // 1. 查帖子主表
+        List<NoteDO> noteList = noteDOMapper.selectByNoteIds(noteIdList);
+        if (CollectionUtils.isEmpty(noteList)) {
+            return Collections.emptyList();
+        }
+
+        // 2. 批量查用户信息
+        List<Long> creatorIds = noteList.stream().map(NoteDO::getCreatorId).distinct().toList();
+        List<FindUserByIdRspDTO> userList = userRpcService.findByIds(creatorIds);
+        Map<Long, FindUserByIdRspDTO> userMap = userList.stream()
+                .collect(Collectors.toMap(FindUserByIdRspDTO::getId, u -> u));
+
+        // 3. 批量查点赞等数据
+        List<Long> noteIds = noteList.stream().map(NoteDO::getId).toList();
+        List<NoteCountDO> countList = noteCountDOMapper.selectByNoteIds(noteIds);
+        Map<Long, NoteCountDO> countMap = countList.stream()
+                .collect(Collectors.toMap(NoteCountDO::getNoteId, c -> c));
+
+        // 4. 封装 VO 列表
+        List<FindDiscoverNoteRspVO> voList = new ArrayList<>();
+        for (NoteDO note : noteList) {
+            FindDiscoverNoteRspVO vo = FindDiscoverNoteRspVO.builder()
+                    .id(String.valueOf(note.getId()))
+                    .title(note.getTitle())
+                    .type(note.getType())
+                    .build();
+
+            // 类型相关内容（封面图/视频）
+            NoteTypeEnum typeEnum = NoteTypeEnum.valueOf(note.getType());
+            switch (typeEnum) {
+                case IMAGE_TEXT -> vo.setCover(
+                        Optional.ofNullable(note.getImgUris())
+                                .map(imgs -> StringUtils.split(imgs, ",")[0])
+                                .orElse(null));
+                case VIDEO -> vo.setVideoUri(note.getVideoUri());
+            }
+
+            // 用户信息
+            FindUserByIdRspDTO user = userMap.get(note.getCreatorId());
+            if (user != null) {
+                vo.setCreatorId(note.getCreatorId());
+                vo.setNickname(user.getNickName());
+                vo.setAvatar(user.getAvatar());
+            }
+
+            // 点赞信息
+            NoteCountDO count = countMap.get(note.getId());
+            vo.setLikeTotal(count != null ? String.valueOf(count.getLikeTotal()) : "0");
+
+            voList.add(vo);
+        }
+
+        return voList;
+    }
+
+
 
 }
 

@@ -46,4 +46,15 @@ public interface FansDOMapper {
      * @return
      */
     List<FansDO> select5000FansByUserId(Long userId);
+
+
+    /**
+     * 按照游标查找粉丝
+     */
+    List<Long> selectFansByUserId(
+            @Param("creatorId") Long creatorId,
+            @Param("cursor") Long cursor,
+            @Param("limit") int limit
+    );
+
 }

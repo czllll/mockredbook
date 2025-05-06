@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * @description: 计数: 笔记评论数
  **/
 @Component
-@RocketMQMessageListener(consumerGroup = "xiaohashu_group_" + MQConstants.TOPIC_COUNT_NOTE_COMMENT, // Group 组
+@RocketMQMessageListener(consumerGroup = "mockbook_group_" + MQConstants.TOPIC_COUNT_NOTE_COMMENT, // Group 组
         topic = MQConstants.TOPIC_COUNT_NOTE_COMMENT // 主题 Topic
         )
 @Slf4j

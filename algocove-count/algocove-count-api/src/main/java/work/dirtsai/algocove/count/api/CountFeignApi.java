@@ -1,5 +1,7 @@
 package work.dirtsai.algocove.count.api;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.algocove.count.constant.ApiConstants;
 
@@ -33,5 +35,12 @@ public interface CountFeignApi {
      */
     @PostMapping(value = PREFIX + "/user/data")
     Response<FindUserCountByIdRspDTO> findUserCount(@RequestBody FindUserCountByIdReqDTO findUserCountByIdReqDTO);
+
+    /**
+     * 查询粉丝计数
+     */
+    @GetMapping(value = PREFIX + "/user/fans-count")
+    Long getFansCountByCreatorId(@RequestParam("creatorId") Long creatorId);
+
 
 }

@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @description: 评论热度值计算
  **/
 @Component
-@RocketMQMessageListener(consumerGroup = "xiaohashu_group_" + MQConstants.TOPIC_COMMENT_HEAT_UPDATE, // Group 组
+@RocketMQMessageListener(consumerGroup = "mockbook_group_" + MQConstants.TOPIC_COMMENT_HEAT_UPDATE, // Group 组
         topic = MQConstants.TOPIC_COMMENT_HEAT_UPDATE // 主题 Topic
         )
 @Slf4j

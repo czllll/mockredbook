@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>work.dirtsai</groupId>
+        <artifactId>algocove</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <groupId>work.dirtsai.algocove</groupId>
+    <artifactId>algocove-feed</artifactId>
+    <packaging>jar</packaging>
+
+    <name>algocove-feed</name>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>algocove-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>algocove-common</artifactId>
+        </dependency>
+
+        <!-- Rocket MQ -->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>algocove-count-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>work.dirtsai.algocove.user.relation</groupId>
+            <artifactId>algocove-user-relation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>algocove-spring-boot-starter-biz-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>work.dirtsai</groupId>
+            <artifactId>algocove-note-api</artifactId>
+        </dependency>
+
+
+    </dependencies>
+</project>

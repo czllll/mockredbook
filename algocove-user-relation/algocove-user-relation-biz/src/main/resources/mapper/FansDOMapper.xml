@@ -100,5 +100,16 @@
     where user_id = #{userId} order by create_time desc limit 5000
   </select>
 
+  <select id="selectFansByUserId" resultType="java.lang.Long">
+    SELECT fans_user_id
+    FROM t_fans
+    WHERE user_id = #{creatorId}
+    <if test="cursor != null">
+      AND id &gt; #{cursor}
+    </if>
+    ORDER BY id ASC
+    LIMIT #{limit}
+  </select>
+
 
 </mapper>

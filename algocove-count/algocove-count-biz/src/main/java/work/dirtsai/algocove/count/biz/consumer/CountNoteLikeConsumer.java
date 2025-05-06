@@ -84,6 +84,10 @@ public class CountNoteLikeConsumer implements RocketMQListener<String> {
             // 笔记发布者 ID
             Long creatorId = null;
             for (CountLikeUnlikeNoteMqDTO countLikeUnlikeNoteMqDTO : list) {
+
+                // 设置笔记发布者用户 ID
+                creatorId = countLikeUnlikeNoteMqDTO.getNoteCreatorId();
+
                 // 获取操作类型
                 Integer type = countLikeUnlikeNoteMqDTO.getType();
 

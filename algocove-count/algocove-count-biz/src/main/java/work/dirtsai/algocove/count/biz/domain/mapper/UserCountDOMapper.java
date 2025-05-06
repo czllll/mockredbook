@@ -54,4 +54,12 @@ public interface UserCountDOMapper {
 
 
     UserCountDO selectByUserId(Long userId);
+
+    /**
+     * 根据userId查找粉丝数量
+     * @param userId
+     * @return
+     */
+
+    Long selectFansCountByUserId(@Param("userId") Long userId);
 }

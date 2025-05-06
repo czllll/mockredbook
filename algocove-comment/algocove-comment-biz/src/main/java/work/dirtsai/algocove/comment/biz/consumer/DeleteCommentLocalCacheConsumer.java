@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 @Slf4j
-@RocketMQMessageListener(consumerGroup = "xiaohashu_group_" + MQConstants.TOPIC_DELETE_COMMENT_LOCAL_CACHE, // Group
+@RocketMQMessageListener(consumerGroup = "mockbook_group_" + MQConstants.TOPIC_DELETE_COMMENT_LOCAL_CACHE, // Group
         topic = MQConstants.TOPIC_DELETE_COMMENT_LOCAL_CACHE, // 消费的主题 Topic
         messageModel = MessageModel.BROADCASTING) // 广播模式
 public class DeleteCommentLocalCacheConsumer implements RocketMQListener<String>  {

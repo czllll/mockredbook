@@ -64,4 +64,9 @@ public interface MQConstants {
      */
     String TAG_NOTE_DELETE = "deleteNote";
 
+    /**
+     * Topic: Feed
+     */
+    String TOPIC_NOTE_FEED = "NoteFeedTopic";
+
 }

@@ -1,7 +1,11 @@
 package work.dirtsai.algocove.note.biz.service;
 
+import org.springframework.web.bind.annotation.RequestBody;
+import work.dirtsai.framework.common.response.PageResponse;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.algocove.note.biz.model.vo.*;
+
+import java.util.List;
 
 /**
  * 笔记业务
@@ -92,5 +96,7 @@ public interface NoteService {
      */
     Response<FindNoteIsLikedAndCollectedRspVO> isLikedAndCollectedData(FindNoteIsLikedAndCollectedReqVO findNoteIsLikedAndCollectedReqVO);
 
+
+    List<FindDiscoverNoteRspVO> getNotesByUserIds(List<Long> noteIdList);
 
 }

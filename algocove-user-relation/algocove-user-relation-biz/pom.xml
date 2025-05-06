@@ -111,6 +111,10 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
+        <dependency>
+            <groupId>work.dirtsai.algocove.user.relation</groupId>
+            <artifactId>algocove-user-relation-api</artifactId>
+        </dependency>
 
     </dependencies>
 

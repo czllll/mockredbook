@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * @description: 计数: 评论点赞数
  **/
 @Component
-@RocketMQMessageListener(consumerGroup = "xiaohashu_group_count_" + MQConstants.TOPIC_COMMENT_LIKE_OR_UNLIKE, // Group 组
+@RocketMQMessageListener(consumerGroup = "mockbook_group_count_" + MQConstants.TOPIC_COMMENT_LIKE_OR_UNLIKE, // Group 组
         topic = MQConstants.TOPIC_COMMENT_LIKE_OR_UNLIKE // 主题 Topic
         )
 @Slf4j

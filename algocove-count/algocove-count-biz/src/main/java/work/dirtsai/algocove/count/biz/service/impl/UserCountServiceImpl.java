@@ -46,4 +46,14 @@ public class UserCountServiceImpl implements UserCountService {
 
         return Response.success(findUserCountByIdRspDTO);
     }
+
+    public Long getFansCountByCreatorId(Long creatorId) {
+        if (creatorId == null) {
+            throw new IllegalArgumentException("creatorId must not be null");
+        }
+
+        Long count = userCountDOMapper.selectFansCountByUserId(creatorId);
+        return count != null ? count : 0L;
+    }
+
 }

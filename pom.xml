@@ -32,6 +32,7 @@
     <module>algocove-data-align</module>
     <module>algocove-search</module>
     <module>algocove-comment</module>
+      <module>algocove-feed</module>
   </modules>
 
   <properties>
@@ -274,6 +275,12 @@
         <artifactId>algocove-oss-api</artifactId>
         <version>${revision}</version>
       </dependency>
+      <dependency>
+        <groupId>work.dirtsai</groupId>
+        <artifactId>algocove-note-api</artifactId>
+        <version>${revision}</version>
+
+      </dependency>
 
       <!-- Feign 表单提交 -->
       <dependency>
@@ -292,6 +299,12 @@
       <dependency>
         <groupId>work.dirtsai</groupId>
         <artifactId>algocove-kv-api</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>work.dirtsai.algocove.user.relation</groupId>
+        <artifactId>algocove-user-relation-api</artifactId>
         <version>${revision}</version>
       </dependency>
 

@@ -16,6 +16,8 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Service;
+import work.dirtsai.algocove.user.relation.model.dto.FansPageReqDTO;
+import work.dirtsai.algocove.user.relation.model.dto.FansPageRspDTO;
 import work.dirtsai.framework.biz.context.holder.LoginUserContextHolder;
 import work.dirtsai.framework.common.exception.BizException;
 import work.dirtsai.framework.common.response.PageResponse;
@@ -39,10 +41,7 @@ import work.dirtsai.algocove.user.relation.biz.rpc.UserRpcService;
 import work.dirtsai.algocove.user.relation.biz.service.RelationService;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -56,7 +55,7 @@ public class RelationServiceImpl implements RelationService {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Resource
-    private  FollowingDOMapper followingDOMapper;
+    private FollowingDOMapper followingDOMapper;
 
     @Resource
     private RocketMQTemplate rocketMQTemplate;
@@ -616,5 +615,26 @@ public class RelationServiceImpl implements RelationService {
         luaArgs[argsLength - 1] = expireSeconds; // 最后一个参数是 ZSet 的过期时间
         return luaArgs;
     }
+
+    /**
+     * 使用游标查询粉丝列表
+     */
+    public Response<FansPageRspDTO> getFansPage(FansPageReqDTO fansPageReqDTO){
+        List<Long> followerIds = new ArrayList<>();
+        Long creatorId = fansPageReqDTO.getCreatorId();
+        Long cursor = fansPageReqDTO.getCursor();
+        int pageSize = fansPageReqDTO.getLimit();
+
+        List<Long> fansIds = fansDOMapper.selectFansByUserId(creatorId, cursor, pageSize);
+        // 计算 nextCursor
+        Long nextCursor = (fansIds.isEmpty()) ? null : fansIds.get(fansIds.size() - 1);
+
+        // 判断是否还有下一页
+        boolean hasMore = fansIds.size() == pageSize;
+
+        FansPageRspDTO rspDTO = FansPageRspDTO.builder().fansIds(fansIds).nextCursor(nextCursor).hasMore(hasMore).build();
+        return Response.success(rspDTO);
+    }
+
 
 }

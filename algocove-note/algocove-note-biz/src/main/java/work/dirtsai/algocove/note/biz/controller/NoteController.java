@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog;
+import work.dirtsai.framework.common.response.PageResponse;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.algocove.note.biz.model.vo.*;
 import work.dirtsai.algocove.note.biz.service.NoteService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/note")
@@ -84,6 +87,12 @@ public class NoteController {
     @ApiOperationLog(description = "获取当前用户是否点赞、收藏数据")
     public Response<FindNoteIsLikedAndCollectedRspVO> isLikedAndCollectedData(@Validated @RequestBody FindNoteIsLikedAndCollectedReqVO findNoteIsLikedAndCollectedReqVO) {
         return noteService.isLikedAndCollectedData(findNoteIsLikedAndCollectedReqVO);
+    }
+
+    //====================feign================
+    @PostMapping(value = "/queryByUserIds")
+    Object getNotesByUserIds(@RequestBody List<Long> noteIdList) {
+        return noteService.getNotesByUserIds(noteIdList);
     }
 
 

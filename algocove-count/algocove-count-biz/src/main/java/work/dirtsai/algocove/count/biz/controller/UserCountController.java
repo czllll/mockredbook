@@ -4,10 +4,7 @@ package work.dirtsai.algocove.count.biz.controller;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import work.dirtsai.framework.biz.operationlog.aspect.ApiOperationLog;
 import work.dirtsai.framework.common.response.Response;
 import work.dirtsai.algocove.count.biz.service.UserCountService;
@@ -32,6 +29,12 @@ public class UserCountController {
     @ApiOperationLog(description = "获取用户计数数据")
     public Response<FindUserCountByIdRspDTO> findUserCountData(@Validated @RequestBody FindUserCountByIdReqDTO findUserCountByIdReqDTO) {
         return userCountService.findUserCountData(findUserCountByIdReqDTO);
+    }
+
+    @GetMapping(value = "/user/fans-count")
+    @ApiOperationLog(description = "获取用户粉丝数量")
+    public Long getFansCountByCreatorId(@RequestParam("creatorId") Long creatorId) {
+        return userCountService.getFansCountByCreatorId(creatorId);
     }
 
 }
