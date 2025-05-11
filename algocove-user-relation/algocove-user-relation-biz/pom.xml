@@ -12,7 +12,6 @@
     <packaging>jar</packaging>
 
     <name>algocove-user-relation-biz</name>
-    <url>http://maven.apache.org</url>
 
 
     <dependencies>

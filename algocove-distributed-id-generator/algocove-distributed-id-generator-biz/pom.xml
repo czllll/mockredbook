@@ -4,7 +4,7 @@
     <parent>
         <groupId>work.dirtsai</groupId>
         <artifactId>algocove-distributed-id-generator</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <properties>
         <common-io.version>2.4</common-io.version>

@@ -7,7 +7,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
-  <description>小哈书（仿小红书），基于 Spring Cloud Alibaba 微服务架构</description>
+  <description>算法组队平台</description>
   <modules>
     <module>algocove-auth</module>
     <module>algocove-framework</module>
@@ -15,8 +15,14 @@
     <module>algocove-oss</module>
     <module>algocove-user</module>
     <module>algocove-kv</module>
-    <module>algocove-kv/algocove-kv-api</module>
-    <module>algocove-kv/algocove-kv-biz</module>
+    <module>algocove-distributed-id-generator</module>
+    <module>algocove-note</module>
+    <module>algocove-user-relation</module>
+    <module>algocove-count</module>
+    <module>algocove-data-align</module>
+    <module>algocove-search</module>
+    <module>algocove-comment</module>
+    <module>algocove-feed</module>
   </modules>
   <properties>
     <minio.version>8.2.1</minio.version>
@@ -31,22 +37,28 @@
     <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
     <dysmsapi.version>2.0.24</dysmsapi.version>
     <spring-cloud.version>2022.0.0</spring-cloud.version>
+    <elasticsearch.version>7.3.0</elasticsearch.version>
     <mybatis-generator-maven-plugin.version>1.3.5</mybatis-generator-maven-plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <commons-lang3.version>3.12.0</commons-lang3.version>
+    <caffeine.version>3.1.8</caffeine.version>
+    <rocketmq.version>2.2.3</rocketmq.version>
     <java.version>17</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <aliyun-sdk-oss.version>3.17.4</aliyun-sdk-oss.version>
     <activation.version>1.1.1</activation.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+    <buffertrigger.version>0.2.21</buffertrigger.version>
     <jaxb-runtime.version>2.3.3</jaxb-runtime.version>
     <revision>0.0.1-SNAPSHOT</revision>
     <lombok.version>1.18.30</lombok.version>
     <jaxb-api.version>2.3.1</jaxb-api.version>
     <maven.compiler.target>${java.version}</maven.compiler.target>
+    <rocketmq-client.version>4.9.4</rocketmq-client.version>
     <druid.version>1.2.23</druid.version>
     <nacos-config.version>0.3.0-RC</nacos-config.version>
     <transmittable-thread-local.version>2.14.2</transmittable-thread-local.version>
+    <xxl-job.version>2.4.1</xxl-job.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -66,7 +78,7 @@
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
-        <groupId>work.dirtsai.algocove.framework</groupId>
+        <groupId>work.dirtsai</groupId>
         <artifactId>algocove-spring-boot-starter-biz-context</artifactId>
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
@@ -197,18 +209,88 @@
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
+        <groupId>work.dirtsai</groupId>
+        <artifactId>algocove-note-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>io.github.openfeign.form</groupId>
         <artifactId>feign-form</artifactId>
         <version>${feign-form.version}</version>
       </dependency>
       <dependency>
-        <groupId>work.dirtsai.mockeredbook.user.api</groupId>
+        <groupId>work.dirtsai</groupId>
         <artifactId>algocove-user-api</artifactId>
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>work.dirtsai</groupId>
         <artifactId>algocove-kv-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>work.dirtsai.algocove.user.relation</groupId>
+        <artifactId>algocove-user-relation-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>work.dirtsai</groupId>
+        <artifactId>algocove-distributed-id-generator-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>work.dirtsai</groupId>
+        <artifactId>algocove-count-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>${caffeine.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.rocketmq</groupId>
+        <artifactId>rocketmq-spring-boot-starter</artifactId>
+        <version>${rocketmq.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.phantomthief</groupId>
+        <artifactId>buffer-trigger</artifactId>
+        <version>${buffertrigger.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.xuxueli</groupId>
+        <artifactId>xxl-job-core</artifactId>
+        <version>${xxl-job.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.elasticsearch.client</groupId>
+        <artifactId>elasticsearch-rest-high-level-client</artifactId>
+        <version>${elasticsearch.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.elasticsearch.client</groupId>
+        <artifactId>elasticsearch-rest-client</artifactId>
+        <version>${elasticsearch.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.elasticsearch</groupId>
+        <artifactId>elasticsearch</artifactId>
+        <version>${elasticsearch.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.rocketmq</groupId>
+        <artifactId>rocketmq-client</artifactId>
+        <version>${rocketmq-client.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        <version>2.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>work.dirtsai</groupId>
+        <artifactId>algocove-note-biz</artifactId>
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
     </dependencies>

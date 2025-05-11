@@ -4,14 +4,14 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>work.dirtsai</groupId>
-    <artifactId>algocove-kv</artifactId>
+    <artifactId>algocove</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <groupId>work.dirtsai</groupId>
-  <artifactId>algocove-kv-biz</artifactId>
+  <artifactId>algocove-search</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>${project.artifactId}</name>
-  <description>Key-Value 键值存储业务层</description>
+  <name>algocove-search</name>
+  <description>搜索服务</description>
   <dependencies>
     <dependency>
       <groupId>work.dirtsai</groupId>
@@ -27,28 +27,40 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-bootstrap</artifactId>
+      <groupId>work.dirtsai</groupId>
+      <artifactId>algocove-spring-boot-starter-biz-operationlog</artifactId>
     </dependency>
     <dependency>
       <groupId>work.dirtsai</groupId>
-      <artifactId>algocove-spring-boot-starter-biz-operationlog</artifactId>
+      <artifactId>algocove-spring-boot-starter-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-bootstrap</artifactId>
     </dependency>
     <dependency>
       <groupId>com.alibaba.cloud</groupId>
       <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-cassandra</artifactId>
+      <groupId>org.elasticsearch.client</groupId>
+      <artifactId>elasticsearch-rest-high-level-client</artifactId>
     </dependency>
     <dependency>
-      <groupId>work.dirtsai</groupId>
-      <artifactId>algocove-user-api</artifactId>
+      <groupId>org.elasticsearch.client</groupId>
+      <artifactId>elasticsearch-rest-client</artifactId>
     </dependency>
     <dependency>
-      <groupId>work.dirtsai</groupId>
-      <artifactId>algocove-kv-api</artifactId>
+      <groupId>org.elasticsearch</groupId>
+      <artifactId>elasticsearch</artifactId>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>

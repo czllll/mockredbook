@@ -26,7 +26,6 @@
     <module>algocove-kv</module>
     <module>algocove-distributed-id-generator</module>
     <module>algocove-note</module>
-    <module>algocove-note/algocove-note-biz</module>
     <module>algocove-user-relation</module>
     <module>algocove-count</module>
     <module>algocove-data-align</module>
@@ -374,6 +373,12 @@
         <groupId>org.springdoc</groupId>
         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         <version>2.2.0</version> <!-- 适配 Spring Boot 3.x -->
+      </dependency>
+
+      <dependency>
+        <groupId>work.dirtsai</groupId>
+        <artifactId>algocove-note-biz</artifactId>
+        <version>${revision}</version>
       </dependency>
 
     </dependencies>

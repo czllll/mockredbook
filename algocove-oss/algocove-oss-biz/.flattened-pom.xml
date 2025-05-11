@@ -63,7 +63,7 @@
       <artifactId>jaxb-runtime</artifactId>
     </dependency>
     <dependency>
-      <groupId>work.dirtsai.algocove.framework</groupId>
+      <groupId>work.dirtsai</groupId>
       <artifactId>algocove-spring-boot-starter-biz-context</artifactId>
     </dependency>
   </dependencies>

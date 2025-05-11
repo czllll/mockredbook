@@ -4,9 +4,9 @@ import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import work.dirtsai.algocove.feed.model.dto.PageRspDTO;
-import work.dirtsai.algocove.note.biz.model.vo.FindDiscoverNoteRspVO;
 import work.dirtsai.algocove.feed.rpc.NoteService;
 import work.dirtsai.algocove.feed.service.FeedService;
+import work.dirtsai.algocove.note.model.dto.FindFollowingNoteRspVO;
 import work.dirtsai.framework.common.response.Response;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class FeedServiceImpl implements FeedService {
     NoteService noteService;
 
     @Override
-    public Response<PageRspDTO<FindDiscoverNoteRspVO>> getFollowingFeed(Long userId, Long cursor, Integer limit) {
+    public Response<PageRspDTO<FindFollowingNoteRspVO>> getFollowingFeed(Long userId, Long cursor, Integer limit) {
         String key = "timeline:" + userId;
 
         // 1. 拉取 Redis 中的 noteId（按时间倒序，游标分页）
@@ -52,14 +52,14 @@ public class FeedServiceImpl implements FeedService {
 
         // 3. 转换为 Long，并根据 noteId 查询帖子详情（注意顺序）
         List<Long> noteIdList = noteIds.stream().map(Long::valueOf).toList();
-        List<FindDiscoverNoteRspVO> noteVOList = noteService.getNotesByNoteIds(noteIdList);
+        List<FindFollowingNoteRspVO> noteVOList = noteService.getNotesByNoteIds(noteIdList);
 
         // 4. 计算 nextCursor & hasMore
         Long nextCursor = noteIdList.isEmpty() ? null : noteIdList.get(noteIdList.size() - 1);
         boolean hasMore = noteIdList.size() == limit;
 
         // 5. 返回分页响应体
-        return Response.success(PageRspDTO.<FindDiscoverNoteRspVO>builder()
+        return Response.success(PageRspDTO.<FindFollowingNoteRspVO>builder()
                 .list(noteVOList)
                 .nextCursor(nextCursor)
                 .hasMore(hasMore)

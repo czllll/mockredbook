@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import work.dirtsai.algocove.feed.model.dto.PageRspDTO;
 import work.dirtsai.algocove.feed.model.vo.FeedFollowingReqVO;
-import work.dirtsai.algocove.note.biz.model.vo.FindDiscoverNoteRspVO;
 import work.dirtsai.algocove.feed.service.FeedService;
+import work.dirtsai.algocove.note.model.dto.FindFollowingNoteRspVO;
 import work.dirtsai.framework.biz.context.holder.LoginUserContextHolder;
 import work.dirtsai.framework.common.response.Response;
 
@@ -25,7 +25,7 @@ public class FeedController {
     private FeedService feedService;
 
     @PostMapping("/following")
-    public Response<PageRspDTO<FindDiscoverNoteRspVO>> getFollowingFeed(@RequestBody FeedFollowingReqVO reqVO) {
+    public Response<PageRspDTO<FindFollowingNoteRspVO>> getFollowingFeed(@RequestBody FeedFollowingReqVO reqVO) {
         Long userId = LoginUserContextHolder.getUserId();
         return feedService.getFollowingFeed(userId, reqVO.getCursor(), reqVO.getLimit());
     }

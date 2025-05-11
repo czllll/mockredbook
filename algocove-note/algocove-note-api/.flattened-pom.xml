@@ -4,17 +4,22 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>work.dirtsai</groupId>
-    <artifactId>algocove</artifactId>
+    <artifactId>algocove-note</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <groupId>work.dirtsai</groupId>
-  <artifactId>algocove-kv</artifactId>
+  <artifactId>algocove-note-api</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
   <name>${project.artifactId}</name>
-  <description>Key-Value 键值存储服务</description>
-  <modules>
-    <module>algocove-kv-api</module>
-    <module>algocove-kv-biz</module>
-  </modules>
+  <description>RPC层, 供其他服务调用</description>
+  <dependencies>
+    <dependency>
+      <groupId>work.dirtsai</groupId>
+      <artifactId>algocove-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-openfeign-core</artifactId>
+    </dependency>
+  </dependencies>
 </project>

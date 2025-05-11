@@ -4,13 +4,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>work.dirtsai</groupId>
-    <artifactId>algocove-user</artifactId>
+    <artifactId>algocove-user-relation</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>work.dirtsai</groupId>
-  <artifactId>algocove-user-api</artifactId>
+  <groupId>work.dirtsai.algocove.user.relation</groupId>
+  <artifactId>algocove-user-relation-api</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>algocove-user-api</name>
+  <name>${project.artifactId}</name>
   <description>RPC层, 供其他服务调用</description>
   <dependencies>
     <dependency>

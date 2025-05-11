@@ -1,0 +1,268 @@
+services:
+  algocove-gateway:
+    build:
+      context: ./algocove-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - rocketmq-broker
+
+  algocove-auth:
+    build:
+      context: ./algocove-auth
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - rocketmq-broker
+
+  algocove-oss-biz:
+    build:
+      context: ./algocove-oss/algocove-oss-biz
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - minio
+      - rocketmq-broker
+
+  algocove-user-biz:
+    build:
+      context: ./algocove-user/algocove-user-biz
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - rocketmq-broker
+
+  algocove-kv-biz:
+    build:
+      context: ./algocove-kv/algocove-kv-biz
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - rocketmq-broker
+
+  algocove-distributed-id-generator-biz:
+    build:
+      context: ./algocove-distributed-id-generator/algocove-distributed-id-generator-biz
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - algocove-user-biz
+      - algocove-auth
+
+  algocove-note-biz:
+    build:
+      context: ./algocove-note/algocove-note-biz
+      dockerfile: Dockerfile
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - rocketmq-broker
+
+  algocove-user-relation-biz:
+    build:
+      context: ./algocove-user-relation/algocove-user-relation-biz
+      dockerfile: Dockerfile
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - rocketmq-broker
+
+  algocove-count-biz:
+    build:
+      context: ./algocove-count/algocove-count-biz
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - rocketmq-broker
+
+  algocove-data-align:
+    build:
+      context: ./algocove-data-align
+      dockerfile: Dockerfile
+    ports:
+      - "8091:8091"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - rocketmq-broker
+
+  algocove-search:
+    build:
+      context: ./algocove-search
+      dockerfile: Dockerfile
+    ports:
+      - "8092:8092"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - elasticsearch
+      - rocketmq-broker
+
+  algocove-comment-biz:
+    build:
+      context: ./algocove-comment/algocove-comment-biz
+      dockerfile: Dockerfile
+    ports:
+      - "8093:8093"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - rocketmq-broker
+
+  algocove-feed:
+    build:
+      context: ./algocove-feed
+      dockerfile: Dockerfile
+    ports:
+      - "8094:8094"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - rocketmq-broker
+
+  mysql:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./init/mysql:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  nacos:
+    image: nacos/nacos-server:latest
+    ports:
+      - "8848:8848"
+
+  rocketmq-namesrv:
+    image: apache/rocketmq:5.1.3
+    container_name: rmqnamesrv
+    ports:
+      - "9876:9876"
+    command: sh mqnamesrv
+
+  rocketmq-broker:
+    image: apache/rocketmq:5.1.3
+    container_name: rmqbroker
+    depends_on:
+      - rocketmq-namesrv
+    ports:
+      - "10911:10911"
+      - "10909:10909"
+    environment:
+      - NAMESRV_ADDR=rocketmq-namesrv:9876
+    command: sh mqbroker -n rocketmq-namesrv:9876 -c /opt/rocketmq/conf/broker.conf
+    volumes:
+      - ./rocketmq/broker.conf:/opt/rocketmq/conf/broker.conf
+
+  zookeeper:
+    image: zookeeper:3.8
+    ports:
+      - "2181:2181"
+
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    command: server /data
+
+  elasticsearch:
+    image: elasticsearch:7.17.9
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+
+  cassandra-init:
+    image: cassandra:4.1
+    depends_on:
+      - cassandra
+    volumes:
+      - ./init/cassandra:/scripts
+    entrypoint: ["sh", "-c", "sleep 20 && cqlsh cassandra -f /scripts/init.cql"]
+
+  cassandra:
+    image: cassandra:4.1
+    ports:
+      - "9042:9042"
+
+volumes:
+  mysql_data:
+  redis_data:
+  rocketmq_data:
+  elasticsearch_data:
+  cassandra_data:
+  minio_data:

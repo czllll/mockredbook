@@ -8,13 +8,13 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <groupId>work.dirtsai</groupId>
-  <artifactId>algocove-kv</artifactId>
+  <artifactId>algocove-count</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
-  <description>Key-Value 键值存储服务</description>
+  <description>计数服务</description>
   <modules>
-    <module>algocove-kv-api</module>
-    <module>algocove-kv-biz</module>
+    <module>algocove-count-api</module>
+    <module>algocove-count-biz</module>
   </modules>
 </project>
